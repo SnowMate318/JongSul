@@ -5,15 +5,12 @@ class LibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("SecondPage")
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Text("Library Page"),
+    return Scaffold(  //메인 화면
+        body: SafeArea(
+          child: Text(
+              "lib_screen"
+          ),
         )
-      ),
     );
   }
 }

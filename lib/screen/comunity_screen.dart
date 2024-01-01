@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-class UploadProblemScreen extends StatelessWidget {
-  const UploadProblemScreen({Key? key}) : super(key: key);
+class ComunityScreen extends StatelessWidget {
+  const ComunityScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+        body: SafeArea(
+          child: Text( //메인 화면
+              "comunityScreen"
+          ),
+        )
+    );
   }
 }
