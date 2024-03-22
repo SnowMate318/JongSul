@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jongsul/screen/comunity_screen.dart';
-import 'package:jongsul/screen/generate_problem_screen.dart';
-import 'package:jongsul/screen/home_screen.dart';
+import 'package:jongsul/screen/3_community_screen/community_screen.dart';
+import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
+import 'package:jongsul/screen/1_main_screen/home_screen.dart';
 import 'package:get/get.dart';
-import 'package:jongsul/screen/lib_screen.dart';
-import 'package:jongsul/screen/login_screen.dart';
-import 'package:jongsul/screen/profile_screen.dart';
-import 'package:jongsul/screen/solve_problem_screen.dart';
-import 'package:jongsul/screen/update_problem_screen.dart';
-import 'package:jongsul/screen/upload_problem_screen.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
+import 'package:jongsul/screen/0_preliminary_screen/login_screen.dart';
+import 'package:jongsul/screen/4_profile_screen/profile_screen.dart';
+import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
+import 'package:jongsul/screen/5_generate_problem_screen/update_problem_screen.dart';
+import 'package:jongsul/screen/6_upload_ploblem_screen/upload_problem_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,19 +27,19 @@ class MyApp extends StatelessWidget {
           page: () => HomeScreen(),
         ),
         GetPage(
-          name: '/comunity',
-          page: () => ComunityScreen(),
-        ),
-        GetPage(
-          name: '/generateProblem',
-          page: () => LoginScreen(),
-        ),
-        GetPage(
-          name: '/library',
-          page: () => GenerateProblemScreen(),
+          name: '/community',
+          page: () => CommunityScreen(),
         ),
         GetPage(
           name: '/login',
+          page: () => LoginScreen(),
+        ),
+        GetPage(
+          name: '/generateProblem',
+          page: () => GenerateProblemScreen(),
+        ),
+        GetPage(
+          name: '/library',
           page: () => LibraryScreen(),
         ),
         GetPage(
