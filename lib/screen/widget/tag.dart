@@ -1,4 +1,3 @@
-//화면상에 좌측 패딩값 없애주고 촤측으로 배열시키기
 import 'package:flutter/material.dart';
 
 class Tag extends StatelessWidget {
