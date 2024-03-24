@@ -1,6 +1,8 @@
 //커뮤니티에서 보이는 포스트
 import 'package:flutter/material.dart';
-import 'package:jongsul/component/download_button.dart';
+import 'package:jongsul/screen/3_community_screen/community_profile_screen.dart';
+import 'package:jongsul/screen/widget/download_button.dart';
+import 'package:jongsul/tools/color.dart';
 
 class CommunityPost extends StatelessWidget {
   @override
@@ -8,17 +10,15 @@ class CommunityPost extends StatelessWidget {
     return Column(
       children: [
         Container(
-
           width: 360,
-          height: 520, //카드 전체 크기 결정
+          height: 520,
+          //카드 전체 크기 결정
           clipBehavior: Clip.antiAlias,
-          decoration:
-            ShapeDecoration(
-            color: Color(0xFFFFF8F5), //왜 적용이 안되지??
+          decoration: ShapeDecoration(
+            color: surface, //왜 적용이 안되지??
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -33,10 +33,8 @@ class CommunityPost extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
-
                     children: [
                       Container(
-
                         width: double.infinity,
                         height: 72,
                         padding: const EdgeInsets.only(
@@ -65,7 +63,16 @@ class CommunityPost extends StatelessWidget {
                                       decoration: BoxDecoration(),
                                       child: Stack(
                                         children: [
-                                            Container(
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    CommunityProfileScreen()),
+                                              );
+                                            },
+                                            child: Container(
                                               width: 40,
                                               height: 40,
                                               decoration: const ShapeDecoration(
@@ -73,12 +80,12 @@ class CommunityPost extends StatelessWidget {
                                                 shape: OvalBorder(),
                                               ),
                                             ),
-                                            // SizedBox(
-                                            //   width: 40,
-                                            //   height: 40,
-                                            //   child:
-                                            // ),
-
+                                          ),
+                                          // SizedBox(
+                                          //   width: 40,
+                                          //   height: 40,
+                                          //   child:
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -87,8 +94,10 @@ class CommunityPost extends StatelessWidget {
                                       child: Container(
                                         child: const Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             SizedBox(
                                               width: double.infinity,
@@ -115,7 +124,8 @@ class CommunityPost extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container( //여기에 나중에 이미지 넣기
+                      Container(
+                        //여기에 나중에 이미지 넣기
                         width: 360,
                         height: 188,
                         child: Row(
@@ -128,7 +138,8 @@ class CommunityPost extends StatelessWidget {
                               height: 188,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage("https://via.placeholder.com/360x188"),
+                                  image: NetworkImage(
+                                      "https://via.placeholder.com/360x188"),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -154,7 +165,6 @@ class CommunityPost extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ListTile(
-
                                     title: Text(
                                       '디지털 시스템 설계',
                                       style: TextStyle(
@@ -177,31 +187,31 @@ class CommunityPost extends StatelessWidget {
                                         letterSpacing: 0.25,
                                       ),
                                     ),
-                                    trailing:
-                                    Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                              Icons.file_download_outlined,
-                                              color: Colors.black, // <--- Icon color
-                                              size: 20,
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.file_download_outlined,
+                                          color: Colors.black,
+                                          // <--- Icon color
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          "243",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
                                           ),
-                                          Text(
-                                              "243",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width:15,
-
-                                          ),
-                                          Icon(
-                                            Icons.share,
-                                            color: Colors.black, // <--- Icon color
-                                            size: 15,
-                                          ),
-                                        ],
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Icon(
+                                          Icons.share,
+                                          color: Colors.black,
+                                          // <--- Icon color
+                                          size: 15,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -224,26 +234,24 @@ class CommunityPost extends StatelessWidget {
                             const SizedBox(height: 32),
                             Container(
                               width: double.infinity,
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                      "# 전자공학부",
-                                    style: TextStyle(
-                                      color: Color(0xFF848484),
-                                      fontSize: 14,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.25,
-                                    )
-                                  ),
-                                  DownloadButton(),
+                                  Text("# 전자공학부",
+                                      style: TextStyle(
+                                        color: Color(0xFF848484),
+                                        fontSize: 14,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0.25,
+                                      )),
+                                  DownloadButton(text: '다운로드', isIcon: true),
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),

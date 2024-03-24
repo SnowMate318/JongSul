@@ -15,7 +15,7 @@ class DownMenuBar extends StatelessWidget {
               Navigator.pushNamed(context, '/library');
               break;
             case 2:
-              Navigator.pushNamed(context, '/comunity');
+              Navigator.pushNamed(context, '/community');
               break;
             case 3:
               Navigator.pushNamed(context, '/profile');
