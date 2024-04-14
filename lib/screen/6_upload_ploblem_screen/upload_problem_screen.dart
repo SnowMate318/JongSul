@@ -118,16 +118,14 @@ class _UploadProblemScreenState extends State<UploadProblemScreen> {
                           padding: EdgeInsets.only(right: 10),
                           child: ElevatedButton(
                             //icon: Icon(Icons.download, size: 18),
-                            child: Text("추가"),
+                            child: Text("추가", style: TextStyle(
+                                color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
                                 backgroundColor: Color(0XFF8B5000),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 15),
-                                textStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal)),
+                            ),
                           )),
                     ]),
                 Divider(
@@ -167,7 +165,9 @@ class _UploadProblemScreenState extends State<UploadProblemScreen> {
                         children: [
                           ElevatedButton(
                             //icon: Icon(Icons.download, size: 18),
-                            child: Text("공유하기"),
+                            child: Text("공유하기",style: TextStyle(
+                                color: Colors.white, fontSize: 14,
+                                fontWeight: FontWeight.normal)),
                             onPressed: () {
                               //   Navigator.push(
                               //     context,
@@ -175,13 +175,10 @@ class _UploadProblemScreenState extends State<UploadProblemScreen> {
                               //   );
                             },
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
                                 backgroundColor: Color(0XFF8B5000),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 15),
-                                textStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal)),
+                                ),
                           )
                         ],
                       ),

@@ -77,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   ElevatedButton(
                     //icon: Icon(Icons.download, size: 18),
-                    child: Text("입력"),
+                    child: Text("입력", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14, fontWeight: FontWeight.normal)
+                    ),
                     onPressed: () {
                       setState(() {
                         idInputText = idController.text;
@@ -88,14 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
+
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        textStyle: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.normal)),
+                    )
                   ),
-                  SizedBox(width: 200,),
+                  const SizedBox(width: 200),
                 ],
               ),
             ],

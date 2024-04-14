@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   String id;
@@ -33,9 +32,6 @@ class User {
         updated_at=map['updated_at'] ??'',
         user_name=map['user_name'] ??'',
         profile=map['profile']?? '';
-
-  User.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.id, snapshot.data() as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() {
     return {
