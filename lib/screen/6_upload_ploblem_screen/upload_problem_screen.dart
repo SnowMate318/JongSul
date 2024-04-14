@@ -121,13 +121,11 @@ class _UploadProblemScreenState extends State<UploadProblemScreen> {
                             child: Text("추가"),
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
                                 backgroundColor: Color(0XFF8B5000),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 15),
-                                textStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal)),
+                                textStyle: const TextStyle(
+                                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                           )),
                     ]),
                 Divider(
@@ -175,12 +173,11 @@ class _UploadProblemScreenState extends State<UploadProblemScreen> {
                               //   );
                             },
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
                                 backgroundColor: Color(0XFF8B5000),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 15),
                                 textStyle: TextStyle(
-                                    fontSize: 14,
+                                    color: Colors.white, fontSize: 14,
                                     fontWeight: FontWeight.normal)),
                           )
                         ],

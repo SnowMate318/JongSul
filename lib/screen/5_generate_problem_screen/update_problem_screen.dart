@@ -3,6 +3,8 @@ import 'package:jongsul/screen/5_generate_problem_screen/update_problem_oxquiz_s
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 
+enum Answer {A, B, C, D}
+
 class UpdateProblemScreen extends StatefulWidget {
   const UpdateProblemScreen({super.key});
 
@@ -12,6 +14,7 @@ class UpdateProblemScreen extends StatefulWidget {
 
 class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
   TextEditingController inputController = TextEditingController();
+  Answer? _answer =Answer.A;
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +355,58 @@ class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: const Text('A'),
+                      leading: Radio<Answer>(
+                        value: Answer.A,
+                        groupValue: _answer,
+                        onChanged: (Answer? value) {
+                          setState(() {
+                            _answer = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('B'),
+                      leading: Radio<Answer>(
+                        value: Answer.B,
+                        groupValue: _answer,
+                        onChanged: (Answer? value) {
+                          setState(() {
+                            _answer = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('C'),
+                      leading: Radio<Answer>(
+                        value: Answer.C,
+                        groupValue: _answer,
+                        onChanged: (Answer? value) {
+                          setState(() {
+                            _answer = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('D'),
+                      leading: Radio<Answer>(
+                        value: Answer.D,
+                        groupValue: _answer,
+                        onChanged: (Answer? value) {
+                          setState(() {
+                            _answer = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Row(
@@ -374,12 +429,11 @@ class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        textStyle: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.normal)),
+                        textStyle: const TextStyle(
+                            color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                   ),
                 ),
               ],

@@ -198,12 +198,11 @@ class _UpdateProblemShortAnswerScreenState extends State<UpdateProblemShortAnswe
                       // );
                     },
                     style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                         EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         textStyle: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.normal)),
+                            color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                   ),
                 ),
               ],
