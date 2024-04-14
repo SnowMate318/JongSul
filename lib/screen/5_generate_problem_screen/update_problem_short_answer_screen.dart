@@ -190,7 +190,8 @@ class _UpdateProblemShortAnswerScreenState extends State<UpdateProblemShortAnswe
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     //icon: Icon(Icons.download, size: 18),
-                    child: Text("수정 완료"),
+                    child: Text("수정 완료", style: TextStyle(
+                        color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                     onPressed: () {
                       // Navigator.push(
                       //   context,
@@ -201,8 +202,7 @@ class _UpdateProblemShortAnswerScreenState extends State<UpdateProblemShortAnswe
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                         EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        textStyle: TextStyle(
-                            color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
+                       ),
                   ),
                 ),
               ],
