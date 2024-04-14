@@ -229,11 +229,11 @@ class _UpdateProblemOXQuizScreenState extends State<UpdateProblemOXQuizScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                         EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         textStyle: TextStyle(
+                          color: Colors.white,
                             fontSize: 14, fontWeight: FontWeight.normal)),
                   ),
                 ),

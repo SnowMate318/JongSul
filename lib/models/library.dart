@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Library {
   String title;
@@ -24,8 +23,6 @@ class Library {
         library_last_access = map['library_last_access'] ?? '',
         is_deleted = map['is_deleted'] ?? false;
 
-  Library.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data() as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() {
     return {
