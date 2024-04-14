@@ -1,5 +1,5 @@
 
-class User {
+class ServiceUser {
   String id;
   String email;
   bool is_supueruser;
@@ -10,7 +10,7 @@ class User {
   String user_name;
   String profile;
 
-  User.init({
+  ServiceUser.init({
     this.id= '',
     this.email= '',
     this.is_supueruser=false,
@@ -22,10 +22,10 @@ class User {
     this.profile= '',
 });
 
-  User.fromMap(String documentId, Map<String, dynamic> map)
-      : id = documentId,
+  ServiceUser.fromMap(Map<String, dynamic> map)
+      : id = map['id']??'',
         email= map['email']??'',
-        is_supueruser=map['is_supueruser']??false,
+        is_supueruser=map['is_superuser']??false,
         is_active=map['is_active']??false,
         is_staff=map['is_staff']??false,
         created_at=map['created_at']?? '',
@@ -37,7 +37,7 @@ class User {
     return {
      'id':id,
      'email':email,
-     'is_supueruser':is_supueruser,
+     'is_superuser':is_supueruser,
      'is_active':is_active,
      'is_staff':is_staff,
      'created_at':created_at,
