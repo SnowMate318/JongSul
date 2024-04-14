@@ -1,4 +1,5 @@
 class Shared {
+  int sharedId;
   String shared_title;
 
   String shared_content;
@@ -9,12 +10,15 @@ class Shared {
   bool is_deleted;
   int download_count;
 
+  List<String>? sharedTags;
+
   // Library.init()
   //     : title = '',
   //       library_last_access = '',
   //       is_deleted = false,
 
   Shared.init({
+    this.sharedId = 0,
     this.shared_title = '',
     this.shared_content = '',
     this.shared_upload_datetime = '',
@@ -24,12 +28,14 @@ class Shared {
   });
 
   Shared.fromMap(Map<String, dynamic> map)
-      : shared_title = map['shared_title'] ?? '',
+      : sharedId = map['id'] ?? '',
+        shared_title = map['shared_title'] ?? '',
         shared_content = map['shared_content'] ?? '',
         shared_upload_datetime = map['shared_upload_datetime'] ?? '',
         is_activated = map['is_activated'] ?? false,
         is_deleted = map['is_deleted'] ?? false,
-        download_count = map['download_count'] ?? 0;
+        download_count = map['download_count'] ?? 0,
+        sharedTags = [];
 
   Map<String, dynamic> toJson() {
     return {
@@ -43,6 +49,7 @@ class Shared {
   }
 
   void fromJson(Map<String, dynamic> map) {
+    sharedId = map['id'] ?? sharedId;
     shared_title = map['shared_title'] ??shared_title;
     shared_content = map['shared_content'] ?? shared_content;
     shared_upload_datetime = map['shared_upload_datetime'] ??shared_upload_datetime;
