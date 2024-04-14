@@ -421,7 +421,8 @@ class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     //icon: Icon(Icons.download, size: 18),
-                    child: Text("수정 완료"),
+                    child: Text("수정 완료", style: TextStyle(
+                        color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -432,8 +433,7 @@ class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
                         backgroundColor: Color(0XFF8B5000),
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        textStyle: const TextStyle(
-                            color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal)),
+                        ),
                   ),
                 ),
               ],
