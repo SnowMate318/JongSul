@@ -3,6 +3,8 @@ import 'package:jongsul/screen/5_generate_problem_screen/update_problem_short_an
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 
+enum Answer {O,X}
+
 class UpdateProblemOXQuizScreen extends StatefulWidget {
   const UpdateProblemOXQuizScreen({super.key});
 
@@ -12,7 +14,7 @@ class UpdateProblemOXQuizScreen extends StatefulWidget {
 
 class _UpdateProblemOXQuizScreenState extends State<UpdateProblemOXQuizScreen> {
   TextEditingController inputController = TextEditingController();
-
+  Answer? _answer =Answer.O;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,6 +178,35 @@ class _UpdateProblemOXQuizScreenState extends State<UpdateProblemOXQuizScreen> {
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
+                //ToggleButtons 사용하기
+              Column(
+                children: <Widget>[
+                  ListTile(
+                    title: const Text('O'),
+                    leading: Radio<Answer>(
+                      value: Answer.O,
+                      groupValue: _answer,
+                      onChanged: (Answer? value) {
+                        setState(() {
+                          _answer = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('X'),
+                    leading: Radio<Answer>(
+                      value: Answer.X,
+                      groupValue: _answer,
+                      onChanged: (Answer? value) {
+                        setState(() {
+                          _answer = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Row(

@@ -98,7 +98,7 @@ class _GenerateProblemScreenState extends State<GenerateProblemScreen> {
 
                             },
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.white,
+                                foregroundColor: Colors.white,
                                 backgroundColor: Color(0XFF8B5000),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 15),

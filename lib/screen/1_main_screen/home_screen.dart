@@ -1,80 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import 'package:jongsul/tools/color.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
-    String text = "JongSul"; // String형 text변수를 "JongSul"으로 지정
-
-    return Scaffold(// 화면 반환
-      appBar: AppBar(title: Text(text)),//앱바 설정 앱바 텍스트는 text변수에 저장된 "JongSul"
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("홈스크린"),
+        shape: const Border(
+          bottom: BorderSide(
+            color: outlineVariant,
+            width: 1,
+          ),
+        ),
+      ),
       bottomNavigationBar: DownMenuBar(),
-      body: SafeArea( //SafeArea: 화면 튀어나옴 그런것들 보호해줌
-          child: Center(// 이건 중앙에 위치시킴(미관상 넣었는데 자주는 안쓰임)
-              child: Column(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("libScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/library');//화면이동
-                    },
+                  Text(
+                    '내가 풀던 문제',
+                    style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("loginScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/login');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("communityScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/community');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("generateProblemScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/generateProblem');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("uploadProblemScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/uploadProblem');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("profileScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/profile');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("solveProblemScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/solveProblem');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-                  TextButton(// 텍스트 형식으로 된 버튼
-                    child: Text("updateProblemScreen"),
-                    onPressed: (){//버튼을 눌렀을 때
-                      Get.toNamed('/updateProblem');//화면이동
-                    },
-                  ),
-                  SizedBox(height: 40.0,),
-
+                  TextButton(
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        Text("전체보기"),
+                        Icon(Icons.chevron_right, size: 18),
+                      ],
+                    ),
+                  )
                 ],
-              )
-          )
+              ),
+            ),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200.0,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.45,
+                reverse: true,
+              ),
+              items: [1, 2, 3, 4, 5].map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Card(
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ListTile(
+                            title: Text(
+                              "컴퓨터 네트워크",
+                            ),
+                            subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('1장'),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ]),
+                          ),
+                        ],
+                      ),
+                    );
+                    // return Container(
+                    //     width: MediaQuery.of(context).size.width,
+                    //     margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.amber
+                    //     ),
+                    // );
+                  },
+                );
+              }).toList(),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Divider(
+              color: Color(0xFFD5C3B5),
+              height: 1,
+            ),
+          ],
+        ),
       ),
     );
   }

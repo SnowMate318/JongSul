@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jongsul/screen/1_main_screen/home_screen.dart';
+import 'package:jongsul/screen/1_main_screen/home1_screen.dart';
 
 class GenerateProblemCompleteScreen extends StatefulWidget {
   const GenerateProblemCompleteScreen({super.key});
@@ -53,7 +53,7 @@ class _GenerateProblemCompleteScreenState
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => Home1Screen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
