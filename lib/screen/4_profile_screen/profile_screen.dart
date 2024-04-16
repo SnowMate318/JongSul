@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
-import 'package:jongsul/screen/widget/communityPost.dart';
+import 'package:jongsul/screen/widget/community_post.dart';
 import 'package:jongsul/screen/widget/profile.dart';
 import 'package:jongsul/screen/widget/tag.dart';
 import 'package:jongsul/screen/3_community_screen/search_screen.dart';

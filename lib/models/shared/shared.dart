@@ -10,7 +10,11 @@ class Shared {
   bool is_deleted;
   int download_count;
 
-  List<String>? sharedTags;
+  List<String> sharedTags;
+
+  //Todo: Shared 시리얼라이져에 유저정보 추가
+  String userName;
+  String userProfile;
 
   // Library.init()
   //     : title = '',
@@ -25,6 +29,9 @@ class Shared {
     this.is_activated = false,
     this.is_deleted = false,
     this.download_count = 0,
+    this.userName = '',
+    this.userProfile = '',
+    this.sharedTags = const[],
   });
 
   Shared.fromMap(Map<String, dynamic> map)
@@ -35,6 +42,8 @@ class Shared {
         is_activated = map['is_activated'] ?? false,
         is_deleted = map['is_deleted'] ?? false,
         download_count = map['download_count'] ?? 0,
+        userName = map['user']['user_name'] ?? '',
+        userProfile = map['user']['user_profile'] ?? '',
         sharedTags = [];
 
   Map<String, dynamic> toJson() {
@@ -56,5 +65,8 @@ class Shared {
     is_activated = map['is_activated'] ?? is_activated;
     is_deleted = map['is_deleted'] ?? is_deleted;
     download_count = map['download_count'] ?? download_count;
+    userName = map['user']['user_name'] ?? userName;
+    userProfile = map['user']['user_profile'] ?? userProfile;
+    sharedTags = [];
   }
 }
