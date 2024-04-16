@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
-import 'package:jongsul/screen/widget/communityPost.dart';
+import 'package:jongsul/screen/widget/community_post.dart';
 import 'package:jongsul/screen/widget/tag.dart';
 import 'package:jongsul/screen/3_community_screen/search_screen.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:jongsul/class/uploadedTest.dart';
-
+import 'package:jongsul/models/shared/shared.dart';
 import 'package:jongsul/tools/style.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -25,6 +25,19 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   // 드롭다운 버튼의 선택된 값을 저장할 변수
   String dropDownValue = "1";
+
+  Shared shared = Shared.init(
+      sharedId: 1,
+      shared_title: "First Share",
+      shared_content: "Content of the first shared item",
+      shared_upload_datetime: "2023-04-14T12:00:00",
+      is_activated: true,
+      is_deleted: false,
+      download_count: 150,
+      userName: 'User1',
+      userProfile: 'https://via.placeholder.com/40x40',
+      sharedTags: ['전자공학부', '지능로봇공학과'],
+  );
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +116,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
-              CommunityPost(),
+              communityPost(context, shared),
               SizedBox(
                 height: 30,
               ),
