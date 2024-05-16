@@ -25,7 +25,7 @@ Future<void> tokenRefresh(SharedPreferences prefs) async {
   await prefs.setString("refresh_token", responseBody['token']['refresh']);
 }
 
-Future<ServiceUser> getServiceUser({String? token}) async {
+Future<ServiceUser> getServiceUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
@@ -123,7 +123,7 @@ Future<ServiceUser> login(String email, String password) async {
 
 
 
-Future<bool> setServiceUser({String? token, required Map<String, dynamic> data}) async {
+Future<bool> setServiceUser(Map<String, dynamic> data) async {
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
   http.Response response;
   SharedPreferences prefs = await SharedPreferences.getInstance();

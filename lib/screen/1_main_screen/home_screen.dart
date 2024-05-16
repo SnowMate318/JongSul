@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 200.0,
                 enableInfiniteScroll: false,
                 viewportFraction: 0.45,
-                reverse: true,
+                reverse: false,
               ),
               items: [1, 2, 3, 4, 5].map((i) {
                 return Builder(
