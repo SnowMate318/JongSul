@@ -80,7 +80,8 @@ Widget communityPost(BuildContext context, Shared shared){
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            shared.shared_title,
+                            '타이틀',
+                            //shared.shared_title,
                             style: const TextStyle(
                               color: Color(0xFF201B16),
                               fontSize: 16,

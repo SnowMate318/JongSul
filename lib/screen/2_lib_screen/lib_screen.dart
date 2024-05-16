@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -56,7 +57,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 height: 200.0,
                 enableInfiniteScroll: false,
                 viewportFraction: 0.45,
-                reverse: true,
+                reverse: false,
               ),
               items: [1, 2, 3, 4, 5].map((i) {
                 return Builder(
@@ -152,7 +153,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 height: 200.0,
                 enableInfiniteScroll: false,
                 viewportFraction: 0.45,
-                reverse: true,
+                reverse: false,
               ),
               items: [1, 2, 3, 4, 5].map((i) {
                 return Builder(
@@ -339,10 +340,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
             child: const Icon(Icons.edit),
             onPressed: () {
               final state = _key.currentState;
+
               if (state != null) {
-                debugPrint('isOpen:${state.isOpen}');
                 state.toggle();
+
               }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GenerateProblemScreen()),
+              );
             },
           ),
           FloatingActionButton.small(

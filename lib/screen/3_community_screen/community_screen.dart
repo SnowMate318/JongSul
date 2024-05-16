@@ -9,7 +9,10 @@ import 'package:jongsul/models/shared/shared.dart';
 import 'package:jongsul/tools/style.dart';
 
 class CommunityScreen extends StatefulWidget {
-  const CommunityScreen({super.key});
+  //Shared tmpl;
+  //CommunityScreen({super.key, required this.tmpl});
+  CommunityScreen({super.key});
+
 
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
@@ -28,7 +31,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   Shared shared = Shared.init(
       sharedId: 1,
-      shared_title: "First Share",
+      //shared_title: "First Share",
       shared_content: "Content of the first shared item",
       shared_upload_datetime: "2023-04-14T12:00:00",
       is_activated: true,
