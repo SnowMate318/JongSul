@@ -19,7 +19,9 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
-  @override
+
+
+
   // 리스트 뷰를 실행할 횟수(임시값)
   final List<String> entries = <String>['A', 'B', 'C'];
 
@@ -28,7 +30,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   // 드롭다운 버튼의 선택된 값을 저장할 변수
   String dropDownValue = "1";
-
+  late List<Shared> sharedList;
   Shared shared = Shared.init(
       sharedId: 1,
       //shared_title: "First Share",
@@ -41,7 +43,17 @@ class _CommunityScreenState extends State<CommunityScreen> {
       userProfile: 'https://via.placeholder.com/40x40',
       sharedTags: ['전자공학부', '지능로봇공학과'],
   );
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    sharedList = await getSharedList();
 
+
+
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -115,7 +127,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: entries.length, //API에서 받아오는 개수로 바꿔주기
+        itemCount: entries.length, //API에서 받아오는 개수로 바꿔주 기
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [

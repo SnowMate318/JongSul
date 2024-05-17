@@ -7,13 +7,19 @@ import 'package:jongsul/models/user/service_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/controller_my_info.dart';
+import '../../functions/http_request.dart';
+import '../../screen/0_preliminary_screen/login_screen.dart';
 
 Future<void> tokenRefresh(SharedPreferences prefs) async {
   Uri uri = Uri.parse('http://127.0.0.1/token/refresh/');
   String refreshToken = prefs.getString('refresh_token') ?? '';
+  // {
+  //   "refresh": "enskagharktjaslkyhrselkygjdslkures;atawekjrhlsrj;egahejorv"
+  // }
   var data = jsonEncode({
     'refresh': refreshToken,
   });
+
   http.Response refreshResponse = await http.post(
       uri,
       headers: {
@@ -26,34 +32,29 @@ Future<void> tokenRefresh(SharedPreferences prefs) async {
 }
 
 Future<ServiceUser> getServiceUser() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();// 저장소
+
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
   http.Response response;
-
+  Map<String, String> header = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $accessToken',
+  };
   response = await http.get(
       uri,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      }
+      headers: header
   );
+
   if (response.statusCode == 401) { // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    accessToken = prefs.getString('access_token')??'';
-    uri = Uri.parse('http://127.0.0.1/auth/');
-    response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        }
-    );
+    ServiceUser serviceUser = await getServiceUser();
+    return serviceUser;
   } else if (response.statusCode == 400) { // access token이 invalid할 경우
-    //Todo: 로그인 화면으로 이동하는 로직
-
+    //Todo: 로그인 화면 이동
+    Get.offAll(LoginScreen);
   }
-
+  //401: 토큰 만료, 400: 인증 에러, 200: 성공, else: 나머지 에러
   if (response.statusCode == 200) {
     var responseBody = jsonDecode(response.body);
     return ServiceUser.fromMap(responseBody);
@@ -63,7 +64,7 @@ Future<ServiceUser> getServiceUser() async {
   }
 }
 
-Future<ServiceUser> login(String email, String password) async {
+Future<void> login(String email, String password) async {
   Uri authUri = Uri.parse('http://127.0.0.1/auth/'); // HTTPS 사용 권장
   var data = jsonEncode({
     'email': email,
@@ -85,16 +86,11 @@ Future<ServiceUser> login(String email, String password) async {
       prefs.setString("access_token", responseBody['token']['access']);
       prefs.setString("refresh_token", responseBody['token']['refresh']);
 
+      String? accessToken = prefs.getString("access_token");
       // 유저 데이터 맵을 클래스로 변환
-      ServiceUser serviceUser = ServiceUser.fromMap(responseBody['user']);
-
-      if (await setServiceUser(data: serviceUser.toJson())) {
-        MyInfo myInfo = Get.find();
-        return await myInfo.getMyInfo();
-      } else {
-        debugPrint("ServiceUser 정보를 제대로 가져오지 못함");
-        return ServiceUser.init();
-      }
+      ServiceUser serviceUser = await getServiceUser();
+      MyInfo myInfo = Get.find();
+      myInfo.setMyInfo(serviceUser);
 
       // if(serviceUser.user_name==''){ // 유저네임이 없을 경우 랜덤 생성
       //   Uri uri = Uri.parse('https://nickname.hwanmoo.kr/?format=json&count=15');
@@ -112,18 +108,21 @@ Future<ServiceUser> login(String email, String password) async {
     } else {
       // 에러 처리
       debugPrint('Authentication failed: ${authResponse.body}');
-      return ServiceUser.init();
     }
   } catch (e) {
     // 네트워크 요청 실패 시 처리
     debugPrint('Error making authentication request: $e');
-    return ServiceUser.init();
   }
 }
 
 
+// data =
+// {
+//   "name": "수정할 이름",
+//   "profiile_image": "수정할 프로필 url"
+// }
+Future<bool> setServiceUser({required Map<String, dynamic> data}) async {
 
-Future<bool> setServiceUser(Map<String, dynamic> data) async {
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
   http.Response response;
   SharedPreferences prefs = await SharedPreferences.getInstance();
