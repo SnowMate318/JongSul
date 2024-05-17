@@ -1,75 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:jongsul/functions/http_request.dart';
 import 'dart:convert';
-import 'package:jongsul/models/shared/shared.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jongsul/screen/0_preliminary_screen/login_screen.dart';
+import 'package:jongsul/models/directory/directory.dart';
 import 'package:ntp/ntp.dart';
+import 'package:http/http.dart' as http;
+import 'package:jongsul/models/library/library.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../functions/http_request.dart';
+import '../../screen/0_preliminary_screen/login_screen.dart';
 
-//태현상 저번에 만든 함수인데 이거쓸까 밑에꺼 쓸까????
-
-Future<List<Shared>> getSharedList1(String? user, List<String>? tags) async {
-  List<Shared> sharedList = [];
-
-  if (user != null && tags != null) {
-    debugPrint("잘못된 형식");
-    return [];
-  }
-
-  // URL 쿼리 파라미터 구성
-  List<String> queryParams = [];
-  if (tags != null && tags.isNotEmpty) {
-    String tagListString = tags.join(',');
-    queryParams.add("tags=$tagListString");
-  }
-  if (user != null) {
-    queryParams.add("user=$user");
-  }
-  String queryString = queryParams.isNotEmpty ? "?${queryParams.join('&')}" : "";
-
-  Uri url = Uri.parse('http://127.0.0.1/shared/$queryString');
-
-  try {
-    http.Response response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          //Todo: 토큰인증 구현
-      }
-    );
-    if (response.statusCode == 200) {
-      List<dynamic> responseData = jsonDecode(response.body);
-      for (var item in responseData) {
-        Shared tmp = Shared.fromMap(item);
-        List<String> newTagList = [];
-        for(int i=0; item['shared_tags'].length;i++){
-          String tag = item['shared_tags'][i]['name'];
-          newTagList.add(tag);
-        }
-        tmp.sharedTags=newTagList;
-        sharedList.add(tmp);
-      }
-      return sharedList;
-    } else {
-      debugPrint('Failed to load data: ${response.statusCode}');
-      return [];
-    }
-  } catch (e) {
-    debugPrint('Error occurred: $e');
-    return [];
-  }
-}
-
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-
-// 상세 조회 페이지 커뮤니티 조회
-Future<Shared> getShared(int sharedId) async {
+// 상세 조회 페이지 디렉토리 조회
+Future<Directory> getDirectory(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -80,27 +24,28 @@ Future<Shared> getShared(int sharedId) async {
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    Shared shared = await getShared(sharedId);
-    return shared;
+    Directory directory = await getDirectory(directoryId);
+    return directory;
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     //Todo: 로그인 화면 이동
     Get.offAll(LoginScreen);
-    return Shared.init();
+    return Directory.init();
   } else if (response.statusCode == 200) {
     var responseBody = jsonDecode(response.body);
-    return Shared.fromMap(responseBody);
+    return Directory.fromMap(responseBody);
   } else {
     debugPrint(response.statusCode.toString());
-    return Shared.init();
+    return Directory.init();
   }
 }
 
-//전체 커뮤니티 조회
-Future<List<Shared>> getSharedList() async {
+//전체 디렉토리 조회
+Future<List<Directory>> getDirectoryList(int libraryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/');
+  Uri uri =
+      Uri.parse('http://127.0.0.1:8000/api/library/$libraryId/directory/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -111,21 +56,21 @@ Future<List<Shared>> getSharedList() async {
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    List<Shared> sharedList = await getSharedList();
-    return sharedList;
+    List<Directory> directoryList = await getDirectoryList(libraryId);
+    return directoryList;
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     //Todo: 로그인 화면 이동
-    Get.offAll(LoginScreen());
+    Get.offAll(LoginScreen);
     return [];
   } else if (response.statusCode == 200) {
     var responseBody = jsonDecode(response.body);
-    List<Shared> sharedList = [];
+    List<Directory> directoryList = [];
     for (Map<String, dynamic> map in responseBody) {
-      Shared shared = Shared.fromMap(map);
-      sharedList.add(shared);
+      Directory directory = Directory.fromMap(map);
+      directoryList.add(directory);
     }
-    return sharedList;
+    return directoryList;
   } else {
     debugPrint(response.statusCode.toString());
     return [];
@@ -133,21 +78,40 @@ Future<List<Shared>> getSharedList() async {
   //401: 토큰 만료, 400: 인증 에러, 200: 성공, else: 나머지 에러
 }
 
-//커뮤니티 다운로드
-Future<void> putShared(int sharedId) async {
+//디렉토리 추가, 포스트
+Future<void> addDirectory(
+    int libraryId,
+    String title,
+    String script,
+    int difficulty,
+    int multipleChoice,
+    int shortAnswer,
+    int oxProb,
+    int allProb) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri =
+      Uri.parse('http://127.0.0.1:8000/api/library/$libraryId/directory/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken',
   };
-  response = await http.post(uri, headers: header);
+  Map<String, dynamic> body = {
+    'title': title,
+    'script': script,
+    'difficulty': difficulty,
+    'multiple_choice': multipleChoice,
+    'short_answer': shortAnswer,
+    'ox_prob': oxProb,
+    'all_prob': allProb
+  };
+  response = await http.post(uri, headers: header, body: body);
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    putShared(sharedId);
+    addDirectory(libraryId, title, script, difficulty, multipleChoice,
+        shortAnswer, oxProb, allProb);
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
@@ -158,11 +122,51 @@ Future<void> putShared(int sharedId) async {
     debugPrint(response.statusCode.toString());
   }
 }
-// 커뮤니티 삭제
-Future<void> deleteShared(int sharedId) async {
+
+//디렉토리 공유, 포스트
+Future<void> shareDirectory(
+  int directoryId,
+  String sharedTitle,
+  String sharedContent,
+) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
+  String accessToken = prefs.getString('access_token') ?? '';
+  Uri uri =
+      Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId/share/');
+  http.Response response;
+  Map<String, String> header = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $accessToken',
+  };
+  Map<String, dynamic> body = {
+    'shared_title': sharedTitle,
+    'shared_content': sharedContent,
+  };
+  response = await http.post(uri, headers: header, body: body);
+  if (response.statusCode == 401) {
+    // access token이 만료되었을 경우,
+    await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
+    shareDirectory(
+      directoryId,
+      sharedTitle,
+      sharedContent,
+    );
+  } else if (response.statusCode == 400) {
+    // access token이 invalid할 경우
+    Get.offAll(LoginScreen);
+  } else if (response.statusCode == 200) {
+    //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
+    //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
+  } else {
+    debugPrint(response.statusCode.toString());
+  }
+}
+
+// 디렉토리 삭제
+Future<void> deleteDirectory(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -172,7 +176,7 @@ Future<void> deleteShared(int sharedId) async {
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    deleteShared(sharedId);
+    deleteDirectory(directoryId);
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
@@ -185,30 +189,23 @@ Future<void> deleteShared(int sharedId) async {
   //401: 토큰 만료, 400: 인증 에러, 200: 성공, else: 나머지 에러
 }
 
-// 커뮤니티 패치, 수정
-Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent, List<String>tags) async {
+// 디렉토리 패치
+Future<void> patchDirectory(
+    int directoryId, String title, String concept) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/$sharedId');
+  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken',
   };
-  List<Map<String,String>> uploadTags = [];
-  for(String tag in tags){
-    uploadTags.add({"name":tag});
-  }
-  Map<String,dynamic> body = {
-    "shared_title": sharedTitle,
-    "shared_content": sharedContent,
-    "shared_tags": uploadTags,
-  };
+  Map<String, dynamic> body = {"title": title, "concept": concept};
   response = await http.patch(uri, headers: header, body: body);
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    patchShared(sharedId, sharedTitle, sharedContent, tags);
+    patchDirectory(directoryId, title, concept);
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
@@ -219,6 +216,3 @@ Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent,
     debugPrint(response.statusCode.toString());
   }
 }
-
-
-
