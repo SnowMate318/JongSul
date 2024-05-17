@@ -1,6 +1,7 @@
 class Shared {
   int sharedId;
-  String shared_title;
+
+  //String shared_title;
   String shared_content;
   String shared_upload_datetime;
   bool is_activated;
@@ -19,7 +20,7 @@ class Shared {
 
   Shared.init({
     this.sharedId = 0,
-    this.shared_title = '',
+    //this.shared_title = '',
     this.shared_content = '',
     this.shared_upload_datetime = '',
     this.is_activated = false,
@@ -32,7 +33,7 @@ class Shared {
 
   Shared.fromMap(Map<String, dynamic> map)
       : sharedId = map['id'] ?? '',
-        shared_title = map['shared_title'] ?? '',
+        //shared_title = map['shared_title'] ?? '',
         shared_content = map['shared_content'] ?? '',
         shared_upload_datetime = map['shared_upload_datetime'] ?? '',
         is_activated = map['is_activated'] ?? false,
@@ -44,7 +45,7 @@ class Shared {
 
   Map<String, dynamic> toJson() {
     return {
-      'shared_title': shared_title,
+      //'shared_title': shared_title,
       'shared_content': shared_content,
       'shared_upload_datetime': shared_upload_datetime,
       'is_activated': is_activated,
@@ -55,7 +56,7 @@ class Shared {
 
   void fromJson(Map<String, dynamic> map) {
     sharedId = map['id'] ?? sharedId;
-    shared_title = map['shared_title'] ??shared_title;
+    //shared_title = map['shared_title'] ??shared_title;
     shared_content = map['shared_content'] ?? shared_content;
     shared_upload_datetime = map['shared_upload_datetime'] ??shared_upload_datetime;
     is_activated = map['is_activated'] ?? is_activated;

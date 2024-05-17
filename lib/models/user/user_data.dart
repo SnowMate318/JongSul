@@ -33,6 +33,7 @@ Future<void> tokenRefresh(SharedPreferences prefs) async {
 
 Future<ServiceUser> getServiceUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();// 저장소
+
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
   http.Response response;
@@ -114,12 +115,14 @@ Future<void> login(String email, String password) async {
   }
 }
 
+
 // data =
 // {
 //   "name": "수정할 이름",
 //   "profiile_image": "수정할 프로필 url"
 // }
 Future<bool> setServiceUser({required Map<String, dynamic> data}) async {
+
   Uri uri = Uri.parse('http://127.0.0.1/auth/');
   http.Response response;
   SharedPreferences prefs = await SharedPreferences.getInstance();
