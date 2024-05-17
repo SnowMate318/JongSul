@@ -25,18 +25,7 @@ class MyInfo extends GetxController{
     return _serviceUser;
   }
 
-  Future<bool> setMyInfo(ServiceUser user) async {
 
-    bool ret = await setServiceUser(user.toJson());
-    update();
-    return ret;
-  }
 
-//   Future<bool> removeStudent(String id) async {
-//
-//     // bool ret = await deleteServiceUser(id);
-//     // update();
-//     return ret;
-// }
 
 }
