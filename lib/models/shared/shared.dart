@@ -1,17 +1,13 @@
 class Shared {
   int sharedId;
   String shared_title;
-
   String shared_content;
-
   String shared_upload_datetime;
-
   bool is_activated;
   bool is_deleted;
   int download_count;
 
   List<String> sharedTags;
-
   //Todo: Shared 시리얼라이져에 유저정보 추가
   String userName;
   String userProfile;
