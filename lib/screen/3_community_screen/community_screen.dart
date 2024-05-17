@@ -8,6 +8,8 @@ import 'package:jongsul/class/uploadedTest.dart';
 import 'package:jongsul/models/shared/shared.dart';
 import 'package:jongsul/tools/style.dart';
 
+import '../../models/shared/shared_data.dart';
+
 class CommunityScreen extends StatefulWidget {
   //Shared tmpl;
   //CommunityScreen({super.key, required this.tmpl});
