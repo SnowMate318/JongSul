@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_multiple_choice_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
@@ -71,21 +72,38 @@ class _SolveProblemOxQuizScreenState extends State<SolveProblemOxQuizScreen> {
                   height: 100,
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // 버튼이 눌렸을 때의 동작
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // 모서리 둥글기
+                      ),
+                      fixedSize: Size(70, 70), // 정사각형 크기
+                    ),
                     child: Text(
                       'O',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 45),
                     ),
                   ),
                   SizedBox(
                     width: 15,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // 버튼이 눌렸을 때의 동작
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // 모서리 둥글기
+                      ),
+                      fixedSize: Size(70, 70), // 정사각형 크기
+                    ),
                     child: Text(
                       'X',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 45),
                     ),
                   ),
                 ]),

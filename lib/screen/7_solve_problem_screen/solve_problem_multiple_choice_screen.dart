@@ -73,9 +73,21 @@ class _SolveProblemMultipleChoiceScreenState
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      OutlinedButton(
-                        onPressed: () {},
-                        child: Text("OUTLINED BUTTON"),
+                      ElevatedButton(
+                        onPressed: () {
+                          // 버튼이 눌렸을 때의 동작
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12), // 모서리 둥글기
+                          ),
+                          fixedSize: Size(360, 70), // 정사각형 크기
+                        ),
+                        child: Row(children: [Text('1. '),Text(
+                          ('aaaaaaaaaaaaaaaaaaaaaaaaaa'),
+                          //style: TextStyle(fontSize: 32),
+                        ),
+                        ],),
                       ),
                       SizedBox(
                         height: 15,
