@@ -12,11 +12,11 @@ import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
 
 // 문제+선택지 테스트뷰 조회
-Future<Question> getProblemChoice(int directoryId) async {
+Future<List<Question>> getProblemChoice(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse(
-      'http://127.0.0.1:8000/api/directory/$directoryId/question/test/');
+      'http://13.210.178.148:80/api/directory/$directoryId/question/test/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -27,19 +27,24 @@ Future<Question> getProblemChoice(int directoryId) async {
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    Question problemChoice = await getProblemChoice(directoryId);
+    List<Question> problemChoice = await getProblemChoice(directoryId);
     return problemChoice;
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     //Todo: 로그인 화면 이동
-    Get.offAll(LoginScreen);
-    return Question.init();
+    Get.offAll(LoginScreen());
+    return [];
   } else if (response.statusCode == 200) {
     var responseBody = jsonDecode(response.body);
-    return Question.fromMap(responseBody);
+    List<Question> problemChoice = [];
+    for (Map<String, dynamic> map in responseBody) {
+      Question question = Question.fromMap(map);
+      problemChoice.add(question);
+    }
+    return problemChoice;
   } else {
     debugPrint(response.statusCode.toString());
-    return Question.init();
+    return [];
   }
 }
 
@@ -48,7 +53,7 @@ Future<Question> getQuestion(int questionId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse(
-      'http://127.0.0.1:8000/api/question/$questionId/question/test/');
+      'http:// 13.210.178.148:80 /api/question/$questionId/question/test/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',

@@ -77,7 +77,7 @@ class _SolveProblemShortAnswerScreenState
                     width: 200,
                     height: 35,
                     child: TextField(
-                      maxLength: 2,
+                      maxLength: 20,
                       controller: shortAnswerController,
                       textAlignVertical: TextAlignVertical.top,
                       textAlign: TextAlign.center,
@@ -93,9 +93,20 @@ class _SolveProblemShortAnswerScreenState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    OutlinedButton(
-                      onPressed: () {},
-                      child: Text("제출하기"),
+                    ElevatedButton(
+                      onPressed: () {
+                        // 버튼이 눌렸을 때의 동작
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // 모서리 둥글기
+                        ),
+                        fixedSize: Size(120, 50), // 정사각형 크기
+                      ),
+                      child: Text(
+                        '다음문제로',
+                        //style: TextStyle(fontSize: 45),
+                      ),
                     ),
                   ],
                 ),
