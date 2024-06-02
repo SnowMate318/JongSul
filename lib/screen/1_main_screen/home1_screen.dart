@@ -17,6 +17,12 @@ class Home1Screen extends StatelessWidget {
               child: Column(
                 children: [
                   TextButton(// 텍스트 형식으로 된 버튼
+                    child: Text("testView"),
+                    onPressed: (){//버튼을 눌렀을 때
+                      Get.toNamed('/testView');//화면이동
+                    },
+                  ),
+                  TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("libScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/library');//화면이동

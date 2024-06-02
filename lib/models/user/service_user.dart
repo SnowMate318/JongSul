@@ -1,6 +1,7 @@
 
 class ServiceUser {
-  String id;
+  int id;
+  String uuid;
   String email;
   bool is_supueruser;
   bool is_active;
@@ -11,7 +12,8 @@ class ServiceUser {
   String profile;
 
   ServiceUser.init({
-    this.id= '',
+    this.id= 0,
+    this.uuid= '',
     this.email= '',
     this.is_supueruser=false,
     this.is_active=false,
@@ -23,7 +25,8 @@ class ServiceUser {
 });
 
   ServiceUser.fromMap(Map<String, dynamic> map)
-      : id = map['id']??'',
+      : id = map['id']??0,
+        uuid= map['uuid']??'',
         email= map['email']??'',
         is_supueruser=map['is_superuser']??false,
         is_active=map['is_active']??false,
@@ -36,6 +39,7 @@ class ServiceUser {
   Map<String, dynamic> toJson() {
     return {
      'id':id,
+     'uuid':uuid,
      'email':email,
      'is_superuser':is_supueruser,
      'is_active':is_active,
@@ -48,6 +52,7 @@ class ServiceUser {
   }
   void fromJson(Map<String, dynamic> map) {
     id = map['id']??id;
+    uuid= map['uuid']??uuid;
     email= map['email']??email;
     is_supueruser=map['is_supueruser']??is_supueruser;
     is_active=map['is_active']??is_active;

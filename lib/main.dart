@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jongsul/models/testview.dart';
 import 'package:jongsul/screen/1_main_screen/home_screen.dart';
 import 'package:jongsul/screen/3_community_screen/community_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
@@ -68,10 +69,14 @@ class MyApp extends StatelessWidget {
           name: '/home',
           page: () => HomeScreen(),
         ),
+        GetPage(
+          name: '/testview',
+          page: () => TestView(),
+        ),
 
       ],
       title: 'Flutter Demo',
-      home: const Home1Screen(),
+      home: const TestView(),
     );
   }
 }
