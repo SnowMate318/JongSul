@@ -1,6 +1,6 @@
 class Choice {
-  int choice_num;
-  String choice_content;
+  int choiceNum;
+  String choiceContent;
 
 // Library.init()
 //     : title = '',
@@ -8,23 +8,23 @@ class Choice {
 //       is_deleted = false,
 
   Choice.init({
-    this.choice_num = 1,
-    this.choice_content = '',
+    this.choiceNum = 1,
+    this.choiceContent = '',
   });
 
   Choice.fromMap(Map<String, dynamic> map)
-      : choice_num = map['choice_num'] ?? 1,
-        choice_content = map['choice_content'] ?? '';
+      : choiceNum = map['choice_num'] ?? 1,
+        choiceContent = map['choice_content'] ?? '';
 
   Map<String, dynamic> toJson() {
     return {
-      'choice_num': choice_num,
-      'choice_content': choice_content,
+      'choice_num': choiceNum,
+      'choice_content': choiceContent,
     };
   }
 
   void fromJson(Map<String, dynamic> map) {
-    choice_num = map['choice_num'] ?? choice_num;
-    choice_content = map['choice_content'] ?? choice_content;
+    choiceNum = map['choice_num'] ?? choiceNum;
+    choiceContent = map['choice_content'] ?? choiceContent;
   }
 }

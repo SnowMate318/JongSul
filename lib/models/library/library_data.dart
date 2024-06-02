@@ -33,7 +33,7 @@ Future<Library> getLibrary(int libraryId) async {
     return Library.init();
   }
   if (response.statusCode == 200) {
-    var responseBody = jsonDecode(response.body);
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     return Library.fromMap(responseBody);
   } else {
     debugPrint(response.statusCode.toString());
@@ -67,7 +67,7 @@ Future<List<Library>> getLibraryList() async {
       return [];
     }
     if (response.statusCode == 200) {
-      var responseBody = jsonDecode(response.body);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       List<Library> libraryList = [];
       for (Map<String, dynamic> map in responseBody) {
         Library library = Library.fromMap(map);
@@ -137,7 +137,7 @@ Future<void> deleteLibrary(int libraryId) async {
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
+  } if (response.statusCode == 200) {
     //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
     //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
   } else {

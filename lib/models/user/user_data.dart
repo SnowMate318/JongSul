@@ -56,7 +56,7 @@ Future<ServiceUser> getServiceUser() async {
   }
   //401: 토큰 만료, 400: 인증 에러, 200: 성공, else: 나머지 에러
   if (response.statusCode == 200) {
-    var responseBody = jsonDecode(response.body);
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     return ServiceUser.fromMap(responseBody);
   } else {
     debugPrint(response.statusCode.toString());
@@ -80,7 +80,7 @@ Future<ServiceUser> signUp(String email, String password) async{
     );
     if(response.statusCode == 200){
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var responseBody = jsonDecode(response.body);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       prefs.setString("access_token", responseBody['token']['access']);
       prefs.setString("refresh_token", responseBody['token']['refresh']);
       return ServiceUser.fromMap(responseBody['user']);
@@ -209,7 +209,7 @@ Future<ServiceUser> signUpForKakao()async{
     );
     if(response.statusCode == 200){
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var responseBody = jsonDecode(response.body);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       prefs.setString("access_token", responseBody['token']['access']);
       prefs.setString("refresh_token", responseBody['token']['refresh']);
       return ServiceUser.fromMap(responseBody);
@@ -260,7 +260,7 @@ Future<ServiceUser?> setServiceUserRetUser({required Map<String, dynamic> data})
     Get.offAll(LoginScreen);
   }
   if(response.statusCode==200){
-    var responseBody = jsonDecode(response.body);
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     ServiceUser newUser = ServiceUser.fromMap(responseBody);
     return newUser;
   } else {

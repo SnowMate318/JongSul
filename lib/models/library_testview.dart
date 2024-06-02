@@ -43,7 +43,7 @@ class _TestView2State extends State<LibraryTestView> {
                 _buildDetailLibrary(),
                 TextButton(onPressed: (){
                   Get.to(DirectoryTestView(library: currentLibrary));
-                }, child: Text('닫기')),
+                }, child: Text('디렉토리 화면 보기')),
                 SizedBox(height: 30),
                 Text("라이브러리 리스트"),
                 SizedBox(height: 20),
