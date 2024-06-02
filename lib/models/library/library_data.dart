@@ -8,11 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
 
+String BASE_URL = "http://127.0.0.1:8000";
 // 상세 조회 페이지 라이브러리 조회
 Future<Library> getLibrary(int libraryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/$libraryId');
+  Uri uri = Uri.parse('$BASE_URL/api/library/$libraryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -23,14 +24,15 @@ Future<Library> getLibrary(int libraryId) async {
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    Library library = await getLibrary(libraryId);
-    return library;
+    header['Authorization'] = 'Bearer ${prefs.getString('access_token')}';
+    response = await http.get(uri, headers: header);
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     //Todo: 로그인 화면 이동
     Get.offAll(LoginScreen);
     return Library.init();
-  } else if (response.statusCode == 200) {
+  }
+  if (response.statusCode == 200) {
     var responseBody = jsonDecode(response.body);
     return Library.fromMap(responseBody);
   } else {
@@ -41,36 +43,43 @@ Future<Library> getLibrary(int libraryId) async {
 
 //전체 라이브러리 조회
 Future<List<Library>> getLibraryList() async {
+  List<Library> libraryList = [];
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/');
+  Uri uri = Uri.parse('$BASE_URL/api/library/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken',
   };
-  response = await http.get(uri, headers: header);
+  try{
+    response = await http.get(uri, headers: header);
 
-  if (response.statusCode == 401) {
-    // access token이 만료되었을 경우,
-    await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    List<Library> libraryList = await getLibraryList();
-    return libraryList;
-  } else if (response.statusCode == 400) {
-    // access token이 invalid할 경우
-    //Todo: 로그인 화면 이동
-    Get.offAll(LoginScreen);
-    return [];
-  } else if (response.statusCode == 200) {
-    var responseBody = jsonDecode(response.body);
-    List<Library> libraryList = [];
-    for (Map<String, dynamic> map in responseBody) {
-      Library library = Library.fromMap(map);
-      libraryList.add(library);
+    if (response.statusCode == 401) {
+      // access token이 만료되었을 경우,
+      await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
+      header['Authorization'] = 'Bearer ${prefs.getString('access_token')}';
+      return libraryList;
+    } else if (response.statusCode == 400) {
+      // access token이 invalid할 경우
+      //Todo: 로그인 화면 이동
+      Get.offAll(LoginScreen);
+      return [];
     }
-    return libraryList;
-  } else {
-    debugPrint(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      var responseBody = jsonDecode(response.body);
+      List<Library> libraryList = [];
+      for (Map<String, dynamic> map in responseBody) {
+        Library library = Library.fromMap(map);
+        libraryList.add(library);
+      }
+      return libraryList;
+    } else {
+      debugPrint(response.statusCode.toString());
+      return [];
+    }
+  } catch(e){
+    debugPrint(e.toString());
     return [];
   }
   //401: 토큰 만료, 400: 인증 에러, 200: 성공, else: 나머지 에러
@@ -81,33 +90,40 @@ Future<List<Library>> getLibraryList() async {
 Future<void> addLibrary(String title) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/');
+  Uri uri = Uri.parse('$BASE_URL/api/library/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken',
   };
   Map<String, dynamic> body = {'title': title};
-  response = await http.post(uri, headers: header, body: body);
-  if (response.statusCode == 401) {
-    // access token이 만료되었을 경우,
-    await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    addLibrary(title);
-  } else if (response.statusCode == 400) {
-    // access token이 invalid할 경우
-    Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
-    //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
-    //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
-  } else {
-    debugPrint(response.statusCode.toString());
+  try{
+    response = await http.post(uri, headers: header, body: jsonEncode(body));
+    if (response.statusCode == 401) {
+      // access token이 만료되었을 경우,
+      await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
+      header['Authorization'] = 'Bearer ${prefs.getString('access_token')}';
+      response = await http.post(uri, headers: header, body: jsonEncode(body));
+
+    } else if (response.statusCode == 400) {
+      // access token이 invalid할 경우
+      Get.offAll(LoginScreen);
+    } else if (response.statusCode == 201) {
+      //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
+      //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
+
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
+  } catch (e){
+    debugPrint(e.toString());
   }
 }
 // 라이브러리 삭제
 Future<void> deleteLibrary(int libraryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/$libraryId');
+  Uri uri = Uri.parse('$BASE_URL/api/library/$libraryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -134,7 +150,7 @@ Future<void> deleteLibrary(int libraryId) async {
 Future<void> patchLibrary(int libraryId, String title) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/$libraryId');
+  Uri uri = Uri.parse('$BASE_URL/api/library/$libraryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -143,18 +159,24 @@ Future<void> patchLibrary(int libraryId, String title) async {
   Map<String,dynamic> body = {
     "title": title
   };
-  response = await http.patch(uri, headers: header, body: body);
-  if (response.statusCode == 401) {
-    // access token이 만료되었을 경우,
-    await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
-    patchLibrary(libraryId, title);
-  } else if (response.statusCode == 400) {
-    // access token이 invalid할 경우
-    Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
-    //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
-    //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
-  } else {
-    debugPrint(response.statusCode.toString());
+  try{
+    response = await http.patch(uri, headers: header, body: jsonEncode(body));
+    if (response.statusCode == 401) {
+      // access token이 만료되었을 경우,
+      await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
+      header['Authorization'] = 'Bearer ${prefs.getString('access_token')}';
+      response = await http.patch(uri, headers: header, body: jsonEncode(body));
+    } else if (response.statusCode == 400) {
+      // access token이 invalid할 경우
+      Get.offAll(LoginScreen);
+    }
+    if (response.statusCode == 200) {
+      //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
+      //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
+  }catch(e){
+    debugPrint(e.toString());
   }
 }

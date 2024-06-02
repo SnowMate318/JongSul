@@ -25,7 +25,11 @@ class MyInfo extends GetxController{
     return _serviceUser;
   }
 
+  Future<bool> setMyInfo2(ServiceUser user) async {
 
-
+    bool ret = await setServiceUser(data: user.toJson());
+    update();
+    return ret;
+  }
 
 }

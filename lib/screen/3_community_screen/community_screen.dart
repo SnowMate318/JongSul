@@ -48,7 +48,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-    sharedList = await getSharedList();
+    //sharedList = await getSharedList();
 
 
 
