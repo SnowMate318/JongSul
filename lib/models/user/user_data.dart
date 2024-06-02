@@ -9,8 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../controller/controller_my_info.dart';
 import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
-
-String BASE_URL = "http://127.0.0.1:8000";
+import 'package:jongsul/strings.dart';
 
 Future<void> tokenRefresh(SharedPreferences prefs) async {
   Uri uri = Uri.parse('$BASE_URL/api/token/refresh/');

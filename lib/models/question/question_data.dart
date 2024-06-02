@@ -10,13 +10,14 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
+import 'package:jongsul/strings.dart';
 
 // 문제+선택지 테스트뷰 조회
 Future<List<Question>> getProblemChoice(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse(
-      'http://13.210.178.148:80/api/directory/$directoryId/question/test/');
+      '$BASE_URL/api/directory/$directoryId/question/test/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ Future<Question> getQuestion(int questionId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse(
-      'http:// 13.210.178.148:80 /api/question/$questionId/question/test/');
+      '$BASE_URL/api/question/$questionId/question/test/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -173,7 +174,7 @@ Future<Question> getQuestion(int questionId) async {
 Future<void> deleteQuestion(int questionId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/question/$questionId');
+  Uri uri = Uri.parse('$BASE_URL/api/question/$questionId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -203,7 +204,7 @@ Future<void> patchQuestion(int questionId, List<Choice> choices, int directory,
     int questionNum) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/question/$questionId');
+  Uri uri = Uri.parse('$BASE_URL/api/question/$questionId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -256,7 +257,7 @@ Future<void> patchQuestion(int questionId, List<Choice> choices, int directory,
 Future<void> patchQuestionSubmmit(int questionId, int lastSolved) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/question/$questionId/solve/');
+  Uri uri = Uri.parse('$BASE_URL/api/question/$questionId/solve/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -286,7 +287,7 @@ Future<void> patchQuestionSubmmit(int questionId, int lastSolved) async {
 Future<void> patchQuestionScrap(int questionId, int isScrapped) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/question/$questionId/scrap/');
+  Uri uri = Uri.parse('$BASE_URL/api/question/$questionId/scrap/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
