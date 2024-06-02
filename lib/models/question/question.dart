@@ -40,8 +40,9 @@ class Question {
         question_num = map['question_num'] ?? 1,
         question_title = map['question_title'] ?? '',
         question_content = (map['question_content'] as List<dynamic>?)
-            ?.map((content) => content as String)
-            ?.toList() ?? [],
+                ?.map((content) => content as String)
+                ?.toList() ??
+            [],
         question_answer = map['question_answer'] ?? '',
         question_explanation = map['question_explanation'] ?? '',
         question_type = map['question_type'] ?? 1,
@@ -71,8 +72,9 @@ class Question {
     question_num = map['question_num'] ?? question_num;
     question_title = map['question_title'] ?? question_title;
     question_content = (map['question_content'] as List<dynamic>?)
-        ?.map((content) => content as String)
-        ?.toList() ?? [];
+            ?.map((content) => content as String)
+            ?.toList() ??
+        [];
     question_answer = map['question_answer'] ?? question_answer;
     question_explanation = map['question_explanation'] ?? question_explanation;
     question_type = map['question_type'] ?? question_type;
