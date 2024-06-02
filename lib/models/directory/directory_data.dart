@@ -8,12 +8,13 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
+import 'package:jongsul/strings.dart';
 
 // 상세 조회 페이지 디렉토리 조회
 Future<Directory> getDirectory(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
+  Uri uri = Uri.parse('$BASE_URL/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -45,7 +46,7 @@ Future<List<Directory>> getDirectoryList(int libraryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri =
-      Uri.parse('http://127.0.0.1:8000/api/library/$libraryId/directory/');
+      Uri.parse('$BASE_URL/api/library/$libraryId/directory/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ Future<void> addDirectory(
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri =
-      Uri.parse('http://127.0.0.1:8000/api/library/$libraryId/directory/');
+      Uri.parse('$BASE_URL/api/library/$libraryId/directory/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ Future<void> shareDirectory(
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri =
-      Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId/share/');
+      Uri.parse('$BASE_URL/api/directory/$directoryId/share/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -166,7 +167,7 @@ Future<void> shareDirectory(
 Future<void> deleteDirectory(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
+  Uri uri = Uri.parse('$BASE_URL/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -194,7 +195,7 @@ Future<void> patchDirectory(
     int directoryId, String title, String concept) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/directory/$directoryId');
+  Uri uri = Uri.parse('$BASE_URL/api/directory/$directoryId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',

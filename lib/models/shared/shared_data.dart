@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:jongsul/screen/0_preliminary_screen/login_screen.dart';
 import 'package:ntp/ntp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jongsul/strings.dart';
 
 //태현상 저번에 만든 함수인데 이거쓸까 밑에꺼 쓸까????
 
@@ -29,7 +30,7 @@ Future<List<Shared>> getSharedList1(String? user, List<String>? tags) async {
   }
   String queryString = queryParams.isNotEmpty ? "?${queryParams.join('&')}" : "";
 
-  Uri url = Uri.parse('http://127.0.0.1/shared/$queryString');
+  Uri url = Uri.parse('$BASE_URL/shared/$queryString');
 
   try {
     http.Response response = await http.get(
@@ -69,7 +70,7 @@ Future<List<Shared>> getSharedList1(String? user, List<String>? tags) async {
 Future<Shared> getShared(int sharedId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri = Uri.parse('$BASE_URL/api/shared/$sharedId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -100,7 +101,7 @@ Future<Shared> getShared(int sharedId) async {
 Future<List<Shared>> getSharedList() async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/');
+  Uri uri = Uri.parse('$BASE_URL/api/shared/');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ Future<List<Shared>> getSharedList() async {
 Future<void> putShared(int sharedId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri = Uri.parse('$BASE_URL/api/shared/$sharedId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -162,7 +163,7 @@ Future<void> putShared(int sharedId) async {
 Future<void> deleteShared(int sharedId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1:8000/api/shared/$sharedId');
+  Uri uri = Uri.parse('$BASE_URL/api/shared/$sharedId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ Future<void> deleteShared(int sharedId) async {
 Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent, List<String>tags) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('http://127.0.0.1/api/liarary/$sharedId');
+  Uri uri = Uri.parse('$BASE_URL/api/liarary/$sharedId');
   http.Response response;
   Map<String, String> header = {
     'Content-Type': 'application/json',

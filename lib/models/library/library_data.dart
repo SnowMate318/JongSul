@@ -7,8 +7,8 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
+import 'package:jongsul/strings.dart';
 
-String BASE_URL = "http://127.0.0.1:8000";
 // 상세 조회 페이지 라이브러리 조회
 Future<Library> getLibrary(int libraryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
