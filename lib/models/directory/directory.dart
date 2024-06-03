@@ -1,4 +1,5 @@
 class Directory {
+  int id;
   int last_successed;
 
   String concept;
@@ -17,6 +18,7 @@ class Directory {
   //       is_deleted = false,
 
   Directory.init({
+    this.id = 0,
     this.last_successed = 1,
     this.concept = '',
     this.title = '',
@@ -27,7 +29,8 @@ class Directory {
   });
 
   Directory.fromMap(Map<String, dynamic> map)
-      : last_successed = map['last_successed'] ?? 1,
+      : id = map['id'] ?? 0,
+        last_successed = map['last_successed'] ?? 1,
         concept = map['concept'] ?? '',
         title = map['title'] ?? '',
         question_type = map['question_type'] ?? '',
@@ -37,6 +40,7 @@ class Directory {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'last_successed': last_successed,
       'concept': concept,
       'title': title,
@@ -48,6 +52,7 @@ class Directory {
   }
 
   void fromJson(Map<String, dynamic> map) {
+    id = map['id'] ?? id;
     last_successed = map['last_successed'] ?? last_successed;
     concept = map['concept'] ?? concept;
     title = map['title'] ?? title;

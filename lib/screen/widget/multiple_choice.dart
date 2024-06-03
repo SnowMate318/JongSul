@@ -15,12 +15,12 @@ Widget MultipleChoice(BuildContext context, Question question) {
             Row(
               children: [
                 Text(
-                  '${question.question_num}',
+                  '${question.questionNum}',
                 ),
                 Text(
                   '. ',
                 ),
-                Text(question.question_title),
+                Text(question.questionTitle),
               ],
             ),
             SizedBox(
@@ -35,7 +35,7 @@ Widget MultipleChoice(BuildContext context, Question question) {
       Expanded(
         child: ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: question.question_content.length, //API에서 받아오는 개수로 바꿔주 기
+          itemCount: question.questionContent.length, //API에서 받아오는 개수로 바꿔주 기
           itemBuilder: (BuildContext context, int index) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,

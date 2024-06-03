@@ -15,7 +15,7 @@ Widget OxQuiz(BuildContext context, Question question) {
             Row(
               children: [
                 Text(
-                  '${question.question_num}',
+                  '${question.questionNum}',
                 ),
                 Text(
                   '. ',
@@ -24,7 +24,7 @@ Widget OxQuiz(BuildContext context, Question question) {
               ],
             ),
             SizedBox(height: 50),
-            Text(question.question_title),
+            Text(question.questionTitle),
           ],
         ),
       ),

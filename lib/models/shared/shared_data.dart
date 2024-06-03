@@ -41,7 +41,7 @@ Future<List<Shared>> getSharedList1(String? user, List<String>? tags) async {
       }
     );
     if (response.statusCode == 200) {
-      List<dynamic> responseData = jsonDecode(response.body);
+      List<dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
       for (var item in responseData) {
         Shared tmp = Shared.fromMap(item);
         List<String> newTagList = [];
@@ -88,8 +88,8 @@ Future<Shared> getShared(int sharedId) async {
     //Todo: 로그인 화면 이동
     Get.offAll(LoginScreen);
     return Shared.init();
-  } else if (response.statusCode == 200) {
-    var responseBody = jsonDecode(response.body);
+  } if (response.statusCode == 200) {
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     return Shared.fromMap(responseBody);
   } else {
     debugPrint(response.statusCode.toString());
@@ -119,8 +119,8 @@ Future<List<Shared>> getSharedList() async {
     //Todo: 로그인 화면 이동
     Get.offAll(LoginScreen());
     return [];
-  } else if (response.statusCode == 200) {
-    var responseBody = jsonDecode(response.body);
+  } if (response.statusCode == 200) {
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     List<Shared> sharedList = [];
     for (Map<String, dynamic> map in responseBody) {
       Shared shared = Shared.fromMap(map);
@@ -152,7 +152,7 @@ Future<void> putShared(int sharedId) async {
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
+  } if (response.statusCode == 200) {
     //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
     //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
   } else {
@@ -177,7 +177,7 @@ Future<void> deleteShared(int sharedId) async {
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
+  } if (response.statusCode == 200) {
     //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
     //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
   } else {
@@ -205,7 +205,7 @@ Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent,
     "shared_content": sharedContent,
     "shared_tags": uploadTags,
   };
-  response = await http.patch(uri, headers: header, body: body);
+  response = await http.patch(uri, headers: header, body: jsonEncode(body));
   if (response.statusCode == 401) {
     // access token이 만료되었을 경우,
     await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
@@ -213,7 +213,7 @@ Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent,
   } else if (response.statusCode == 400) {
     // access token이 invalid할 경우
     Get.offAll(LoginScreen);
-  } else if (response.statusCode == 200) {
+  } if (response.statusCode == 200) {
     //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
     //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
   } else {

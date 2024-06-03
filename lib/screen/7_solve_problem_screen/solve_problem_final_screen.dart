@@ -27,19 +27,19 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
       // {choice_num: 4, choice_content: "데이터를 전송하는 목적의 레이어"}
       ///적용이 안되는중 ㅠㅠㅠㅠㅠ
     ],
-    question_num: 13,
-    question_title: '나는 전자공학부 학생이다.',
-    question_content: [],
-    question_answer: 'O',
-    question_explanation: '',
-    question_type: 3,
-    is_scrapped: false,
+    questionNum: 13,
+    questionTitle: '나는 전자공학부 학생이다.',
+    questionContent: '',
+    questionAnswer: 'O',
+    questionExplanation: '',
+    questionType: 3,
+    isScrapped: false,
   );
 
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-    questionList = await getProblemChoice(13);
+    questionList = await getQuestionList(13);
 
     super.didChangeDependencies();
   }
@@ -77,7 +77,7 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                question.is_scrapped = !question.is_scrapped;
+                                question.isScrapped = !question.isScrapped;
                               });
                               //스크랩 유무에 따른 동작 변화 만들기
                             },
@@ -96,7 +96,7 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
                                 ),
                                 Icon(
                                   Icons.star,
-                                  color: question.is_scrapped ? Colors.yellow : Colors.white,
+                                  color: question.isScrapped ? Colors.yellow : Colors.white,
                                   size: 20, // 아이콘 크기 조절, 바깥 테두리보다 작게 설정
                                 ),
                               ],
@@ -114,9 +114,9 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
                 SizedBox(
                   height: 50,
                 ),
-                question.question_type == 1
+                question.questionType == 1
                     ? MultipleChoice(context, question)
-                    : question.question_type == 2
+                    : question.questionType == 2
                     ? ShortAnswer(context, question)
                     : OxQuiz(context, question),
 

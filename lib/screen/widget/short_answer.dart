@@ -18,12 +18,12 @@ Widget ShortAnswer(BuildContext context, Question question,
             Row(
               children: [
                 Text(
-                  '${question.question_num}',
+                  '${question.questionNum}',
                 ),
                 Text(
                   '. ',
                 ),
-                Text(question.question_title),
+                Text(question.questionTitle),
               ],
             ),
             SizedBox(height: 50),
