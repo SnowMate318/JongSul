@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/models/shared/shared.dart';
+import 'package:jongsul/models/shared/shared_tag.dart';
 import 'package:jongsul/models/shared/shared_data.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class SharedTestView extends StatefulWidget {
 class _SharedTestViewState extends State<SharedTestView> {
 
   List<Shared> shareds = [];
-
+  List<List<SharedTag>> sharedTags = [];
   @override
   void initState() {
     initCommunity();
@@ -22,6 +23,9 @@ class _SharedTestViewState extends State<SharedTestView> {
 
   initCommunity() async {
     shareds = await getSharedList();
+    for (int i=0;i<shareds.length;i++){
+      sharedTags.add(shareds[i].sharedTags);
+    }
     setState(() {});
   }
 
@@ -53,7 +57,7 @@ class _SharedTestViewState extends State<SharedTestView> {
   }
   Widget _buildCommunity(){
     return SizedBox(
-      height: 400,
+      height: 600,
       child: ListView.builder(
         itemCount: shareds.length,
         itemBuilder: (context, index){
@@ -66,22 +70,38 @@ class _SharedTestViewState extends State<SharedTestView> {
                   Text(shareds[index].sharedContent),
                   Text(shareds[index].sharedUploadDatetime),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(shareds[index].downloadCount.toString()),
+                      Text('다운로드 수: ${shareds[index].downloadCount.toString()}'),
                       TextButton(
                           onPressed: ()async{
                             await downloadShared(shareds[index].id, shareds[index].sharedTitle);
                             initCommunity();
                             },
                           child: Text('다운로드')
-                      )
+                      ),
+
                     ],
-                  )
+                  ),
+                  _buildTagList(shareds[index]),
                 ],
               )
           );
         },
+      ),
+    );
+  }
+  Widget _buildTagList(Shared shared){
+    return Wrap(
+      children: shared.sharedTags.map((tag) => _buildTag(tag.name)).toList(),
+    );
+  }
+  Widget _buildTag(String tagTitle){
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InputChip(
+        label: Text(tagTitle),
+        backgroundColor: Color(0xFFFFDCBE),
       ),
     );
   }

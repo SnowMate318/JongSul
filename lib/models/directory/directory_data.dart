@@ -98,7 +98,8 @@ Future<void> addDirectory(
     int multipleChoice,
     int shortAnswer,
     int oxProb,
-    int allProb) async {
+    ) async {
+  int allProb = multipleChoice + shortAnswer + oxProb;
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
   String accessToken = prefs.getString('access_token') ?? '';
   Uri uri = Uri.parse('$BASE_URL/api/library/$libraryId/directory/');
@@ -131,7 +132,8 @@ Future<void> addDirectory(
       //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
       //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
     } else {
-      debugPrint(response.statusCode.toString());
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      debugPrint(responseBody['message']);
     }
   } catch (e){
     debugPrint(e.toString());

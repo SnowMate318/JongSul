@@ -166,6 +166,7 @@ Future<List<Shared>> getSharedList() async {
     List<Shared> sharedList = [];
     for (Map<String, dynamic> map in responseBody) {
       Shared shared = Shared.fromMap(map);
+
       sharedList.add(shared);
     }
     return sharedList;
@@ -268,3 +269,4 @@ Future<void> patchShared(int sharedId, String sharedTitle, String sharedContent,
     debugPrint(response.statusCode.toString());
   }
 }
+
