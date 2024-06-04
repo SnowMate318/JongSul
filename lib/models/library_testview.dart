@@ -163,7 +163,7 @@ class _TestView2State extends State<LibraryTestView> {
                   await initLibraryList();
                   setState(() {});
                 },
-                child: Text('삭제하기')
+                child: Text('삭제하기'),
             ),
           ],
         );

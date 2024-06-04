@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jongsul/models/directory_testview.dart';
+import 'package:jongsul/models/library_testview.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_setting.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 
 class Home1Screen extends StatelessWidget {
@@ -20,6 +23,33 @@ class Home1Screen extends StatelessWidget {
                     child: Text("testView"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/testView');//화면이동
+                    },
+                  ),
+                  TextButton(// 텍스트 형식으로 된 버튼
+                    child: Text("LibrarySettingScreen"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LibrarySettingScreen()),
+                      );
+                    },
+                  ),
+                  // TextButton(// 텍스트 형식으로 된 버튼
+                  //   child: Text("DirectoryTestView"),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => DirectoryTestView(library: library)),
+                  //     );
+                  //   },
+                  // ),
+                  TextButton(// 텍스트 형식으로 된 버튼
+                    child: Text("LibraryTestView"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LibraryTestView()),
+                      );
                     },
                   ),
                   TextButton(// 텍스트 형식으로 된 버튼
