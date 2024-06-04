@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/screen/2_lib_screen/lib_all_view.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_setting.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_short_answer_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
@@ -28,6 +29,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
             width: 1,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              // 여기에 버튼을 눌렀을 때 수행할 작업을 추가하세요.
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LibrarySettingScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
