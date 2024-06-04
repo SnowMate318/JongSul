@@ -6,9 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 import '../screen/0_preliminary_screen/login_screen.dart';
+import '../strings.dart';
 
 Future<void> tokenRefresh(SharedPreferences prefs) async {
-  Uri uri = Uri.parse('http://127.0.0.1/token/refresh/');
+  Uri uri = Uri.parse('$BASE_URL/api/token/refresh/');
   String refreshToken = prefs.getString('refresh_token') ?? '';
   var data = jsonEncode({
     'refresh': refreshToken,
@@ -17,13 +18,16 @@ Future<void> tokenRefresh(SharedPreferences prefs) async {
       uri,
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: data
   );
   var response = jsonDecode(refreshResponse.body);
 
   if(response.statusCode==200){
-    await prefs.setString("access_token", response['token']['access']);
-    await prefs.setString("refresh_token", response['token']['refresh']);
+    debugPrint(response);
+    await prefs.setString("access_token", response['access']);
+    await prefs.setString("refresh_token", response['refresh']);
+
   } else if(response.statusCode==401){
     Get.offAll(LoginScreen);
   } else {

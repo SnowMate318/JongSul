@@ -34,6 +34,14 @@ class _TestView2State extends State<LibraryTestView> {
   Widget build(BuildContext context) {
     //스크롤 가능한 뷰
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.back();
+          },
+        )
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
