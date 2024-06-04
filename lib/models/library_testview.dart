@@ -34,6 +34,14 @@ class _TestView2State extends State<LibraryTestView> {
   Widget build(BuildContext context) {
     //스크롤 가능한 뷰
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.back();
+          },
+        )
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -43,7 +51,7 @@ class _TestView2State extends State<LibraryTestView> {
                 _buildDetailLibrary(),
                 TextButton(onPressed: (){
                   Get.to(DirectoryTestView(library: currentLibrary));
-                }, child: Text('닫기')),
+                }, child: Text('디렉토리 화면 보기')),
                 SizedBox(height: 30),
                 Text("라이브러리 리스트"),
                 SizedBox(height: 20),

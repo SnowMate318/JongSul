@@ -1,15 +1,17 @@
+import 'package:jongsul/models/shared/shared_tag.dart';
+
 class Shared {
-  int sharedId;
+  int id;
+  String sharedTitle;
+  String sharedContent;
+  String sharedUploadDatetime;
+  bool isActivated;
+  bool isDeleted;
+  int downloadCount;
 
-  //String shared_title;
-  String shared_content;
-  String shared_upload_datetime;
-  bool is_activated;
-  bool is_deleted;
-  int download_count;
-
-  List<String> sharedTags;
+  List<SharedTag> sharedTags;
   //Todo: Shared 시리얼라이져에 유저정보 추가
+  String userUuid;
   String userName;
   String userProfile;
 
@@ -19,51 +21,66 @@ class Shared {
   //       is_deleted = false,
 
   Shared.init({
-    this.sharedId = 0,
-    //this.shared_title = '',
-    this.shared_content = '',
-    this.shared_upload_datetime = '',
-    this.is_activated = false,
-    this.is_deleted = false,
-    this.download_count = 0,
+    this.id = 0,
+    this.sharedTitle = '',
+    this.sharedContent = '',
+    this.sharedUploadDatetime = '',
+    this.isActivated = false,
+    this.isDeleted = false,
+    this.downloadCount = 0,
+    this.userUuid = '',
     this.userName = '',
     this.userProfile = '',
-    this.sharedTags = const[],
+    this.sharedTags = const [],
   });
 
   Shared.fromMap(Map<String, dynamic> map)
-      : sharedId = map['id'] ?? '',
-        //shared_title = map['shared_title'] ?? '',
-        shared_content = map['shared_content'] ?? '',
-        shared_upload_datetime = map['shared_upload_datetime'] ?? '',
-        is_activated = map['is_activated'] ?? false,
-        is_deleted = map['is_deleted'] ?? false,
-        download_count = map['download_count'] ?? 0,
+      : id = map['id'] ?? '',
+        sharedTitle = map['shared_title'] ?? '',
+        sharedContent = map['shared_content'] ?? '',
+        sharedUploadDatetime = map['shared_upload_datetime'] ?? '',
+        isActivated = map['is_activated'] ?? false,
+        isDeleted = map['is_deleted'] ?? false,
+        downloadCount = map['download_count'] ?? 0,
+        userUuid = map['user']['user_uuid'] ?? '',
         userName = map['user']['user_name'] ?? '',
         userProfile = map['user']['user_profile'] ?? '',
-        sharedTags = [];
+        sharedTags = (map['shared_tags'] as List<dynamic>?)
+                ?.map((tag) => SharedTag.fromMap(tag))
+                ?.toList() ??
+            [];
 
   Map<String, dynamic> toJson() {
     return {
-      //'shared_title': shared_title,
-      'shared_content': shared_content,
-      'shared_upload_datetime': shared_upload_datetime,
-      'is_activated': is_activated,
-      'is_deleted': is_deleted,
-      'download_count': download_count,
+      'id': id,
+      'shared_title': sharedTitle,
+      'shared_content': sharedContent,
+      'shared_upload_datetime': sharedUploadDatetime,
+      'is_activated': isActivated,
+      'is_deleted': isDeleted,
+      'download_count': downloadCount,
+      'user': {
+        'user_uuid' : userUuid,
+        'user_name': userName,
+        'user_profile': userProfile,
+      },
+      'shared_tags': sharedTags.map((tag) => tag.toJson()).toList(),
     };
   }
 
   void fromJson(Map<String, dynamic> map) {
-    sharedId = map['id'] ?? sharedId;
-    //shared_title = map['shared_title'] ??shared_title;
-    shared_content = map['shared_content'] ?? shared_content;
-    shared_upload_datetime = map['shared_upload_datetime'] ??shared_upload_datetime;
-    is_activated = map['is_activated'] ?? is_activated;
-    is_deleted = map['is_deleted'] ?? is_deleted;
-    download_count = map['download_count'] ?? download_count;
+    id = map['id'] ?? id;
+    sharedContent = map['shared_content'] ?? sharedContent;
+    sharedUploadDatetime = map['shared_upload_datetime'] ??sharedUploadDatetime;
+    isActivated = map['is_activated'] ?? isActivated;
+    isDeleted = map['is_deleted'] ?? isDeleted;
+    downloadCount = map['download_count'] ?? downloadCount;
+    userUuid = map['user']['user_uuid'] ?? userUuid;
     userName = map['user']['user_name'] ?? userName;
     userProfile = map['user']['user_profile'] ?? userProfile;
-    sharedTags = [];
+    sharedTags = (map['shared_tags'] as List<dynamic>?)
+            ?.map((tag) => SharedTag.fromMap(tag))
+            ?.toList() ??
+        []; // Choice 리스트 변환
   }
 }

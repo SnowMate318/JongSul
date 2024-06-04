@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jongsul/models/shared_testview.dart';
 import 'package:jongsul/models/user/service_user.dart';
 import 'package:jongsul/models/user/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -213,7 +214,21 @@ class _TestViewState extends State<TestView> {
                   child: Text(
                     '로그인 또는 회원가입 이후 이동',
                     style: TextStyle(fontSize: 20),
-                  ))
+                  )),
+              SizedBox(
+                height: 20,
+              ),
+              OutlinedButton(
+                  onPressed: () {
+                    Get.to(SharedTestView());
+                  },
+                  child: Text(
+                    '로그인 또는 회원가입 이후 이동(커뮤니티)',
+                    style: TextStyle(fontSize: 20),
+                  )),
+              SizedBox(
+                  height: 30
+              ),
             ],
           ),
         )
