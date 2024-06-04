@@ -10,6 +10,8 @@ import '../../functions/http_request.dart';
 import '../../screen/0_preliminary_screen/login_screen.dart';
 import 'package:jongsul/strings.dart';
 
+import '../shared/shared_tag.dart';
+
 // 상세 조회 페이지 디렉토리 조회
 Future<Directory> getDirectory(int directoryId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
@@ -137,39 +139,37 @@ Future<void> addDirectory(
 }
 
 //디렉토리 공유, 포스트
-Future<void> shareDirectory(
-  int directoryId,
-  String sharedTitle,
-  String sharedContent,
-) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance(); // 저장소
+Future<void> shareDirectory(String libraryName, Directory directory,
+    List<SharedTag> sharedTags, String concept) async {
+  String sharedTitle = '$libraryName/${directory.title}';
+  List<Map<String, dynamic>> tags = [];
+  for (var tag in sharedTags) {
+    tags.add(tag.toJson());
+  }
+  String sharedContent = concept;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   String accessToken = prefs.getString('access_token') ?? '';
-  Uri uri = Uri.parse('$BASE_URL/api/directory/$directoryId/share/');
-  http.Response response;
-  Map<String, String> header = {
+  Uri uri = Uri.parse('$BASE_URL/api/directory/${directory.id}/share/');
+  var header = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken',
   };
-  Map<String, dynamic> body = {
+  var body = {
     'shared_title': sharedTitle,
     'shared_content': sharedContent,
+    'shared_tags': tags,
   };
   try {
-    response = await http.post(uri, headers: header, body: jsonEncode(body));
+    http.Response response =
+    await http.post(uri, headers: header, body: jsonEncode(body));
     if (response.statusCode == 401) {
-      // access token이 만료되었을 경우,
-      await tokenRefresh(prefs); // refresh token으로 token을 refresh한 후 다시 요청
+      await tokenRefresh(prefs);
       header['Authorization'] = 'Bearer ${prefs.getString('access_token')}';
-      response = await http.post(uri, headers: header, body: jsonEncode(body));
-    } else if (response.statusCode == 400) {
-      // access token이 invalid할 경우
-      Get.offAll(LoginScreen);
+      response =
+      await http.post(uri, headers: header, body: jsonEncode({body}));
     }
     if (response.statusCode == 200) {
-      //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
-      //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
-    } else {
-      debugPrint(response.statusCode.toString());
+      debugPrint('Success');
     }
   } catch (e) {
     debugPrint(e.toString());

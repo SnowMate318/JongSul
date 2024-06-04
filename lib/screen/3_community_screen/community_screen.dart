@@ -9,6 +9,7 @@ import 'package:jongsul/models/shared/shared.dart';
 import 'package:jongsul/tools/style.dart';
 
 import '../../models/shared/shared_data.dart';
+import '../../models/shared/shared_tag.dart';
 
 class CommunityScreen extends StatefulWidget {
   //Shared tmpl;
@@ -34,16 +35,20 @@ class _CommunityScreenState extends State<CommunityScreen> {
   String dropDownValue = "1";
   late List<Shared> sharedList;
   Shared shared = Shared.init(
-      sharedId: 1,
+      id: 1,
       //shared_title: "First Share",
-      shared_content: "Content of the first shared item",
-      shared_upload_datetime: "2023-04-14T12:00:00",
-      is_activated: true,
-      is_deleted: false,
-      download_count: 150,
+      sharedTitle: "First Share",
+      sharedContent: "Content of the first shared item",
+      sharedUploadDatetime: "2023-04-14T12:00:00",
+      isActivated: true,
+      isDeleted: false,
+      downloadCount: 150,
       userName: 'User1',
       userProfile: 'https://via.placeholder.com/40x40',
-      sharedTags: ['전자공학부', '지능로봇공학과'],
+      sharedTags: [
+        SharedTag.init(name: "tag1"),
+        SharedTag.init(name: "tag2"),
+      ]
   );
   @override
   void didChangeDependencies() async {

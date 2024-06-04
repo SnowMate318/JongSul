@@ -105,7 +105,7 @@ Widget communityPost(BuildContext context, Shared shared){
                                   )
                               ),
                               Text(
-                                '${shared.download_count}',
+                                '${shared.downloadCount}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -119,7 +119,7 @@ Widget communityPost(BuildContext context, Shared shared){
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        shared.shared_content,
+                        shared.sharedContent,
                         style: const TextStyle(
                           color: Color(0xFF51453A),
                           fontSize: 14,
