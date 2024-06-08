@@ -7,6 +7,8 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/library/library_data.dart';
 
 import 'package:get/get.dart';
+
+import 'directory/mini_directory.dart';
 class LibraryTestView extends StatefulWidget {
   const LibraryTestView({super.key});
 
@@ -100,7 +102,26 @@ class _TestView2State extends State<LibraryTestView> {
       children: [
         Text(currentLibrary.title),
         Text(currentLibrary.library_last_access),
+
       ],
+    );
+  }
+
+  Widget _buildDirectoryList(List<MiniDirectory> miniDirectories){
+    return ListView.builder(
+      itemCount: miniDirectories.length,
+      itemBuilder: (context, index){
+        return Card(
+          child: Column(
+            children: [
+              Text(miniDirectories[index].id.toString()),
+              Text(miniDirectories[index].title),
+              Text(miniDirectories[index].concept),
+              Text(miniDirectories[index].directoryLastAccess),
+            ],
+          ),
+        );
+      },
     );
   }
   List<TextEditingController> _titleControllerList = [];
@@ -117,6 +138,8 @@ class _TestView2State extends State<LibraryTestView> {
           children: [
             Text(libraryList[index].title),
             Text(libraryList[index].library_last_access),
+            SizedBox(height: 300, child: _buildDirectoryList(libraryList[index].miniDirectories)),
+            SizedBox(height: 10),
             TextButton(
                 onPressed: ()async{
                   //라이브러리 상세보기

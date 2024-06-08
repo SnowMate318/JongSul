@@ -47,6 +47,17 @@ class _TestViewState extends State<TestView> {
       testUser = newUser;
     });
   }
+  void handleLogoutServiceUser() async {
+    bool tmp = await logout();
+    setState(() {
+      if (tmp) {
+        testUser = ServiceUser.init();
+        debugPrint('logout service user success');
+      } else {
+        debugPrint('logout service user failed');
+      }
+    });
+  }
   void handleSignUp(String email, String password) async {
     var newUser = await signUp(email, password);
     setState(() {
@@ -206,6 +217,10 @@ class _TestViewState extends State<TestView> {
               //Todo: 프로필 사진 업로드
               TextButton(onPressed: (){handleSetServiceUser(_usernameController.text);}, child: Text('set service user')),
               TextButton(onPressed: handleGetServiceUser, child: Text('get service user')),
+              TextButton(onPressed: handleLogoutServiceUser, child: Text('logout service user')),
+              SizedBox(
+                height: 20,
+              ),
               TextButton(onPressed: handleDeleteServiceUser, child: Text('delete service user')),
               OutlinedButton(
                   onPressed: () {
