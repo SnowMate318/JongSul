@@ -14,19 +14,20 @@ Future<void> tokenRefresh(SharedPreferences prefs) async {
   var data = jsonEncode({
     'refresh': refreshToken,
   });
-  http.Response refreshResponse = await http.post(
+  http.Response response = await http.post(
       uri,
       headers: {
         'Content-Type': 'application/json',
       },
       body: data
   );
-  var response = jsonDecode(refreshResponse.body);
+
 
   if(response.statusCode==200){
-    debugPrint(response);
-    await prefs.setString("access_token", response['access']);
-    await prefs.setString("refresh_token", response['refresh']);
+    var responseBody = jsonDecode(response.body);
+    //debugPrint(responseBody.toString());
+    await prefs.setString("access_token", responseBody['access']);
+    await prefs.setString("refresh_token", responseBody['refresh']);
 
   } else if(response.statusCode==401){
     Get.offAll(LoginScreen);

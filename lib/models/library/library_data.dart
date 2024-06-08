@@ -68,6 +68,7 @@ Future<List<Library>> getLibraryList() async {
     }
     if (response.statusCode == 200) {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      // debugPrint(responseBody.toString());
       List<Library> libraryList = [];
       for (Map<String, dynamic> map in responseBody) {
         Library library = Library.fromMap(map);

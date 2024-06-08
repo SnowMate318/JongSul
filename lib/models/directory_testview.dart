@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:jongsul/functions/http_request.dart';
 import 'package:jongsul/models/library/library_data.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/directory/directory.dart';
@@ -7,6 +10,12 @@ import 'package:jongsul/models/question/question.dart';
 import 'package:get/get.dart';
 import 'package:jongsul/models/question_testview.dart';
 import 'package:jongsul/models/shared/shared_tag.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+
+import '../strings.dart';
 
 class DirectoryTestView extends StatefulWidget {
   Library library;
@@ -56,6 +65,23 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
                 height: 20,
               ),
               _buildDirectoryList(),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+                onPressed: () async {
+                  Get.to(AddQuestionView(library: widget.library));
+                },
+                child: Text("문제 추가")
+            ),
+
+            TextButton(
+                onPressed: () async {
+                  String tmpText = await _getPdfText();
+                  Get.to(AddQuestionView(library: widget.library, text: tmpText));
+                },
+                child: Text("pdf 문제 추가")
+            ),
             ]),
           ),
         ),
@@ -147,15 +173,7 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
                       await initDirectories();
                     },
                     child: Text("디렉토리 삭제")),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                    onPressed: () async {
-                      Get.to(AddQuestionView(library: widget.library));
-                    },
-                    child: Text("문제 추가")
-                )
+
               ],
             );
           },
@@ -163,7 +181,42 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
       ],
     );
   }
+  Future<String> _getPdfText() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('access_token');
+
+    try {
+      // Load the file from the assets
+      final ByteData byteData = await rootBundle.load('assets/pdfs/software.pdf');
+      final Uint8List fileBytes = byteData.buffer.asUint8List();
+
+      // Create the multipart request
+      var request = http.MultipartRequest('POST', Uri.parse('$BASE_URL/api/file/'));
+      request.headers['Authorization'] = 'Bearer $accessToken';
+      request.files.add(http.MultipartFile.fromBytes('pdf', fileBytes, filename: 'software.pdf'));
+      http.StreamedResponse response = await request.send();
+
+
+      if(response.statusCode == 401) {
+        await tokenRefresh(prefs);
+        return '';
+      }
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final responseData = jsonDecode(responseString);
+        return responseData['extracted_text'];
+      } else {
+        debugPrint('Error: ${jsonDecode(response.toString())}');
+        return '';
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      return '';
+    }
+  }
 //
+
 }
 //------------------------ 문제공유 ---------------------------
 class ShareDirectotyView extends StatefulWidget {
@@ -296,9 +349,10 @@ class _ShareDirecrotyViewState extends State<ShareDirectotyView> {
 //------------------------ 문제생성 ---------------------------
 class AddQuestionView extends StatefulWidget {
   Library library;
-
+  String? text;
   AddQuestionView({
     required this.library,
+    this.text,
     super.key
   });
 
@@ -314,7 +368,14 @@ class _AddQuestionViewState extends State<AddQuestionView> {
   final TextEditingController _multipleChoiceController = TextEditingController();
   final TextEditingController _shortAnswerController = TextEditingController();
   final TextEditingController _oxController = TextEditingController();
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    if(widget.text!=null){
+      _conceptController.text = widget.text!;
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
