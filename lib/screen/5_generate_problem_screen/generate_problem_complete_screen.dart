@@ -32,62 +32,75 @@ class _GenerateProblemCompleteScreenState
         ),
       ),
       body: SafeArea(
-        child: Column(children: [
-          Container(
-            height: 600,
-            child: Center(
-              child: Text(
-                '문제 생성이 완료되었습니다.',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: ElevatedButton(
-                  //icon: Icon(Icons.download, size: 18),
-                  child: Text("홈으로"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Home1Screen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0XFF8B5000),
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                          fontSize: 14, fontWeight: FontWeight.normal)),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+              height: 600,
+              child: Center(
+                child: Text(
+                  '문제 생성이 완료되었습니다.',
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: ElevatedButton(
-                  //icon: Icon(Icons.download, size: 18),
-                  child: Text("문제 풀기"),
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => generate_\()),
-                    // );
-                  },
-                  style: ElevatedButton.styleFrom(
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: ElevatedButton(
+                    //icon: Icon(Icons.download, size: 18),
+                    child: Text(
+                      "홈으로",
+                      style: TextStyle(
+                        color: Colors.white, // 폰트 색상
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Home1Screen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0XFF8B5000),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                          fontSize: 14, fontWeight: FontWeight.normal)),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ]),
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: ElevatedButton(
+                    //icon: Icon(Icons.download, size: 18),
+                    child: Text(
+                      "문제 풀기",
+                      style: TextStyle(
+                        color: Colors.white, // 폰트 색상
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => generate_\()),
+                      // );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0XFF8B5000),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20,)
+          ]),
+        ),
       ),
     );
   }

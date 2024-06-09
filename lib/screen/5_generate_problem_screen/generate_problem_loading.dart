@@ -16,15 +16,15 @@ class GenerateProblemLoadingScreen extends StatefulWidget {
 class _GenerateProblemLoadingScreenState
     extends State<GenerateProblemLoadingScreen> {
   @override
-  void initState() {
-    Timer(Duration(milliseconds: 3000), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => GenerateProblemCompleteScreen()),
-      );
-    });
-  }
+  // void initState() {
+  //   Timer(Duration(milliseconds: 3000), () {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => GenerateProblemCompleteScreen()),
+  //     );
+  //   });
+  // }
 
   Widget build(BuildContext context) {
     return const Scaffold(
