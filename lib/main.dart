@@ -41,10 +41,10 @@ class MyApp extends StatelessWidget {
           name: '/login',
           page: () => LoginScreen(),
         ),
-        GetPage(
-          name: '/generateProblem',
-          page: () => GenerateProblemScreen(),
-        ),
+        // GetPage(
+        //   name: '/generateProblem',
+        //   page: () => GenerateProblemScreen(),
+        // ),
         GetPage(
           name: '/library',
           page: () => LibraryScreen(),
