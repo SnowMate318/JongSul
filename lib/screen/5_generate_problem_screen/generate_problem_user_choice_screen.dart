@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/models/directory/directory_data.dart';
+import 'package:jongsul/models/directory/mini_directory.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_complete_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_loading.dart';
@@ -56,7 +57,8 @@ class _GenerateProblemUserChoiceScreenState
   }
 
   Future<void> _generateProblems() async {
-    await addDirectory(
+
+    MiniDirectory miniDirectory = await addDirectory(
         widget.library.id,
         widget.title,
         widget.concept,
@@ -66,7 +68,7 @@ class _GenerateProblemUserChoiceScreenState
         int.parse(_oxController.text));
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => GenerateProblemCompleteScreen()),
+      MaterialPageRoute(builder: (context) => GenerateProblemCompleteScreen(library: widget.library, miniDirectory: miniDirectory)),
     );
   }
 

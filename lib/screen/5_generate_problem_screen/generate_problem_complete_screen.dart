@@ -3,10 +3,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jongsul/models/directory/mini_directory.dart';
+import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/screen/1_main_screen/home1_screen.dart';
+import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 
 class GenerateProblemCompleteScreen extends StatefulWidget {
-  const GenerateProblemCompleteScreen({super.key});
+  Library library;
+  MiniDirectory miniDirectory;
+  GenerateProblemCompleteScreen({required this.library,required this.miniDirectory, super.key});
 
   @override
   State<GenerateProblemCompleteScreen> createState() =>
@@ -84,10 +89,10 @@ class _GenerateProblemCompleteScreenState
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => generate_\()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SolveProblemScreen(library: widget.library, directoryId: widget.miniDirectory.id, directoryTitle: widget.miniDirectory.title)),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0XFF8B5000),
