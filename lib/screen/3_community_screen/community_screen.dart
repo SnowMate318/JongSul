@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
-import 'package:jongsul/screen/widget/community_post.dart';
-import 'package:jongsul/screen/widget/tag.dart';
 import 'package:jongsul/screen/3_community_screen/search_screen.dart';
 import 'package:jongsul/tools/color.dart';
-import 'package:jongsul/class/uploadedTest.dart';
 import 'package:jongsul/models/shared/shared.dart';
 import 'package:jongsul/tools/style.dart';
 
@@ -12,52 +9,28 @@ import '../../models/shared/shared_data.dart';
 import '../../models/shared/shared_tag.dart';
 
 class CommunityScreen extends StatefulWidget {
-  //Shared tmpl;
-  //CommunityScreen({super.key, required this.tmpl});
-  CommunityScreen({super.key});
-
+  const CommunityScreen({super.key});
 
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+  List<Shared> shareds = [];
+  List<List<SharedTag>> sharedTags = [];
 
-
-
-  // 리스트 뷰를 실행할 횟수(임시값)
-  final List<String> entries = <String>['A', 'B', 'C'];
-
-  //드롭다운 메뉴 리스트
-  List<String> dropDownList = ['1', '2', '3'];
-
-  // 드롭다운 버튼의 선택된 값을 저장할 변수
-  String dropDownValue = "1";
-  late List<Shared> sharedList;
-  Shared shared = Shared.init(
-      id: 1,
-      //shared_title: "First Share",
-      sharedTitle: "First Share",
-      sharedContent: "Content of the first shared item",
-      sharedUploadDatetime: "2023-04-14T12:00:00",
-      isActivated: true,
-      isDeleted: false,
-      downloadCount: 150,
-      userName: 'User1',
-      userProfile: 'https://via.placeholder.com/40x40',
-      sharedTags: [
-        SharedTag.init(name: "tag1"),
-        SharedTag.init(name: "tag2"),
-      ]
-  );
   @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    //sharedList = await getSharedList();
+  void initState() {
+    initCommunity();
+    super.initState();
+  }
 
-
-
-    super.didChangeDependencies();
+  initCommunity() async {
+    shareds = await getSharedList();
+    for (int i = 0; i < shareds.length; i++) {
+      sharedTags.add(shareds[i].sharedTags);
+    }
+    setState(() {});
   }
 
   @override
@@ -71,7 +44,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
             width: 1,
           ),
         ),
-
       ),
       bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
@@ -85,11 +57,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 children: [
                   Row(
                     children: [
-                      _buildTag("전자공학부"),
+                      _buildTag1("전자공학부"),
                       SizedBox(
                         width: 10,
                       ),
-                      _buildTag("태그"),
+                      _buildTag1("태그"),
                     ],
                   ),
                   _buildFilter(),
@@ -106,19 +78,20 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
-  Widget _buildTag(String tagTitle){
-      return InputChip(
-        label: Text(tagTitle),
-        labelStyle: labelTextStyle,
-        backgroundColor: Color(0xFFFFDCBE),
-        onDeleted: (){
-          debugPrint("input chip deleted");
-        },
-      );
+  Widget _buildTag1(String tagTitle) {
+    return InputChip(
+      label: Text(tagTitle),
+      labelStyle: labelTextStyle,
+      backgroundColor: Color(0xFFFFDCBE),
+      onDeleted: () {
+        debugPrint("input chip deleted");
+      },
+    );
   }
 
-  Widget _buildFilter(){
-    return IconButton(//눌렀을 때 밑에서 위로 올라오는 걸로 변경
+  Widget _buildFilter() {
+    return IconButton(
+      // 눌렀을 때 밑에서 위로 올라오는 걸로 변경
       iconSize: 30,
       icon: const Icon(Icons.filter_list),
       onPressed: () {
@@ -130,15 +103,238 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
-  Widget _buildPosts (){
+  Widget _buildPosts() {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: entries.length, //API에서 받아오는 개수로 바꿔주 기
-        itemBuilder: (BuildContext context, int index) {
+        itemCount: shareds.length, // API에서 받아오는 개수로 바꿔주 기
+        itemBuilder: (context, index) {
           return Column(
             children: [
-              communityPost(context, shared),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Container(
+                  width: MediaQuery.of(context).size.width < 360
+                      ? MediaQuery.of(context).size.width
+                      : 360,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 10),
+                  height: 520,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: surface, // 왜 적용이 안되지??
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => Container(
+                      //           height: 40,
+                      //           child: Row(
+                      //             mainAxisSize: MainAxisSize.min,
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Container(
+                      //                 width: 40,
+                      //                 height: 40,
+                      //                 clipBehavior: Clip.antiAlias,
+                      //                 child: Stack(
+                      //                   children: [
+                      //                     Container(
+                      //                       width: 40,
+                      //                       height: 40,
+                      //                       decoration: const ShapeDecoration(
+                      //                         color: Color(0xFF8B5000),
+                      //                         shape: OvalBorder(),
+                      //                       ),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //               const SizedBox(width: 16),
+                      //               Expanded(
+                      //                 child: Container(
+                      //                   child: const Column(
+                      //                     mainAxisSize: MainAxisSize.min,
+                      //                     mainAxisAlignment:
+                      //                     MainAxisAlignment.start,
+                      //                     crossAxisAlignment:
+                      //                     CrossAxisAlignment.start,
+                      //                     children: [
+                      //                       SizedBox(
+                      //                         width: double.infinity,
+                      //                         child: Text(
+                      //                           '글자',
+                      //                           style: TextStyle(
+                      //                             color: Color(0xFF201B16),
+                      //                             fontSize: 16,
+                      //                             fontFamily: 'Roboto',
+                      //                             fontWeight: FontWeight.w500,
+                      //                             height: 0.09,
+                      //                             letterSpacing: 0.15,
+                      //                           ),
+                      //                         ),
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child:
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: const ShapeDecoration(
+                                color: Color(0xFF8B5000),
+                                shape: OvalBorder(),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              shareds[index].userName,
+                              style: const TextStyle(
+                                color: Color(0xFF201B16),
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                                letterSpacing: 0.15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      // ),
+                      // const Flexible(
+                      //   fit: FlexFit.tight,
+                      //   flex: 4,
+                      //   child: SizedBox(),
+                      // ),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        flex: 6,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      shareds[index].sharedTitle,
+                                      style: const TextStyle(
+                                        color: Color(0xFF201B16),
+                                        fontSize: 16,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0.09,
+                                        letterSpacing: 0.50,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.file_download_outlined,
+                                            color: Colors.black,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${shareds[index].downloadCount.toString()}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  shareds[index].sharedContent,
+                                  style: const TextStyle(
+                                    color: Color(0xFF51453A),
+                                    fontSize: 14,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 0.25,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildTagList(shareds[index]),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await downloadShared(
+                                      shareds[index].id,
+                                      shareds[index].sharedTitle,
+                                    );
+                                    initCommunity();
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.file_download,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        '다운로드',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primary,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 30,
               ),
@@ -148,41 +344,26 @@ class _CommunityScreenState extends State<CommunityScreen> {
       ),
     );
   }
+  // String tagString = '';
+  // Widget _buildTagList(Shared shared) {
+  //   tagString = shared.sharedTags.map((tag) => '#$tag').join(', ')
+  //   return Wrap(
+  //       children: Text(tagString)
+  //   );
+  // }
+  Widget _buildTagList(Shared shared){
+    return Wrap(
+      children: shared.sharedTags.map((tag) => _buildTag(tag.name)).toList(),
+    );
+  }
+  Widget _buildTag(String tagTitle){
+    return Text('#$tagTitle ');
+    //   Padding(
+    //   padding: const EdgeInsets.all(4.0),
+    //   child: InputChip(
+    //     label: Text(tagTitle),
+    //     backgroundColor: Color(0xFFFFDCBE),
+    //   ),
+    // );
+  }
 }
-
-// actions: [
-//   IconButton(//눌렀을 때 밑에서 위로 올라오는 걸로 변경
-//     iconSize: 30,
-//     icon: const Icon(Icons.search),
-//     onPressed: () {
-//       Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => CommunitySearch()),
-//       );
-//     },
-//   ),
-// ],
-
-// DropdownButton(
-//   //https://api.flutter.dev/flutter/material/DropdownButton-class.html
-//   //드롭다운메뉴로 바꾸고 싶으면 위 사이트에서 참고
-//
-//   //초기값
-//   value: dropDownValue,
-//   //드롭다운 아이템 목록
-//   items: dropDownList
-//       .map<DropdownMenuItem<String>>((String value) {
-//     return DropdownMenuItem<String>(
-//       value: value,
-//       child: Text(value),
-//     );
-//   }).toList(),
-//   //사용자가 선택한 메뉴가 달라질 때마다 실행
-//   onChanged: (String? newValue) {
-//     setState(() {
-//       dropDownValue = newValue!;
-//     });
-//   },
-//   //아이콘
-//   icon: Icon(Icons.filter_list),
-// )

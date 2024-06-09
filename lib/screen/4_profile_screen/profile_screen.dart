@@ -31,7 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
-        child: Profile(),
+        child: Text('프로필'),
+        //child: Profile(),
       ),
     );
   }
