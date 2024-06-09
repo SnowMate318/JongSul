@@ -5,10 +5,16 @@ import 'package:jongsul/models/question/choice.dart';
 import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/models/question/question_data.dart';
 import 'package:get/get.dart';
+import 'package:jongsul/models/directory/mini_directory.dart';
 class QuestionTestView extends StatefulWidget {
-  Directory directory;
+  int directoryId;
+  String directoryTitle;
 
-  QuestionTestView({required this.directory, super.key});
+  QuestionTestView({
+        required this.directoryId,
+        required this.directoryTitle,
+        super.key
+      });
 
   @override
   State<QuestionTestView> createState() => _QuestionTestViewState();
@@ -25,7 +31,7 @@ class _QuestionTestViewState extends State<QuestionTestView> {
   }
 
   initQuestions() async {
-    questionList = await getQuestionList(widget.directory.id);
+    questionList = await getQuestionList(widget.directoryId);
     setState(() {});
   }
 
@@ -46,9 +52,9 @@ class _QuestionTestViewState extends State<QuestionTestView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text('디렉토리 이름: ${widget.directory.title}'),
+                Text('디렉토리 이름: ${widget.directoryTitle}'),
                 SizedBox(height: 20),
-                Text('디렉토리 아이디: ${widget.directory.id}'),
+                Text('디렉토리 아이디: ${widget.directoryId}'),
                 SizedBox(height: 20),
                 _buildQuestionList(),
               ],
@@ -82,7 +88,7 @@ class _QuestionTestViewState extends State<QuestionTestView> {
             TextButton(
               onPressed: () async {
                 // 버튼이 눌렸을 때의 동작
-                await patchQuestionScrap(questionList[index].id, !questionList[index].isScrapped, widget.directory.title);
+                await patchQuestionScrap(questionList[index].id, !questionList[index].isScrapped, widget.directoryTitle);
                 initQuestions();
               },
               child: Text('스크랩: ${questionList[index].isScrapped}'),
