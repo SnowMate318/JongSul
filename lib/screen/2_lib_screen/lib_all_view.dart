@@ -6,6 +6,7 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/question_testview.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_short_answer_screen.dart';
+import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -57,19 +58,19 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
       ),
       floatingActionButton: IntrinsicWidth(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
+          padding: EdgeInsets.fromLTRB(10, 10, 0, 80),
           child: ElevatedButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => GenerateProblemScreen(library: widget.library)),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GenerateProblemScreen(library: widget.library)),
+              );
             },
             child: Row(
               children: [
                 Icon(Icons.add, color: Colors.white, size: 20),
                 Text(
-                  '폴더 추가',
+                  '문제 생성',
                   style: TextStyle(
                     color: Colors.white, // 폰트 색상
                     fontSize: 12,
@@ -138,10 +139,10 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                         // ),
                         FilledButton.tonal(
                           onPressed: () async {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => QuestionTestView(directory: directory)),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SolveProblemScreen(library: widget.library, directoryId: directory.id, directoryTitle: directory.title)),
+                            );
                           },
                           child: const Text("문제풀기"),
                         ),
