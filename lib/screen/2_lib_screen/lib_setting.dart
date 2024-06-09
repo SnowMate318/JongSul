@@ -42,45 +42,66 @@ class _LibrarySettingScreenState extends State<LibrarySettingScreen> {
       ),
       body: SafeArea(
         //메인 화면
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 400,
-                child: _buildLibraryList(libraryList),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    AddDialog(context);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.add, color: Colors.white, size: 20),
-                      Text(
-                        '폴더 추가',
-                        style: TextStyle(
-                          color: Colors.white, // 폰트 색상
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
-                    ],
+        child: Column(
+                          children: [
+
+                             _buildLibraryList(libraryList),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+
+
+        ),
+
+        //
+        // SingleChildScrollView(
+        //   // child: ConstrainedBox(
+        //   //   constraints:
+        //   //       BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+        //   //   child: IntrinsicHeight(
+        //       child: Column(
+        //         children: [
+        //
+        //            _buildLibraryList(libraryList),
+        //
+        //           SizedBox(
+        //             height: 10,
+        //           ),
+        //         ],
+        //   //     ),
+        //   //   ),
+        //    ),
+        // ),
+      ),
+      floatingActionButton: IntrinsicWidth(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
+          child: ElevatedButton(
+            onPressed: () {
+              AddDialog(context);
+            },
+            child: Row(
+              children: [
+                Icon(Icons.add, color: Colors.white, size: 20),
+                Text(
+                  '폴더 추가',
+                  style: TextStyle(
+                    color: Colors.white, // 폰트 색상
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primary, // 배경색상
-                    //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  ),
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primary, // 배경색상
+              //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            ),
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -90,7 +111,7 @@ class _LibrarySettingScreenState extends State<LibrarySettingScreen> {
     for (int i = 0; i < libraryList.length; i++) {
       _titleControllerList.add(TextEditingController());
     }
-    return ListView.builder(
+    return Expanded(child: ListView.builder(
       itemCount: libraryList.length,
       itemBuilder: (context, index) {
         return Column(
@@ -170,7 +191,7 @@ class _LibrarySettingScreenState extends State<LibrarySettingScreen> {
           ],
         );
       },
-    );
+    ),);
   }
 
   void DeleteDialog(BuildContext context, int index) {
@@ -277,8 +298,9 @@ class _LibrarySettingScreenState extends State<LibrarySettingScreen> {
                   child: Text('취소')),
               ElevatedButton(
                   onPressed: () async {
-                    //라이브러리 삭제
-                    await deleteLibrary(libraryList[index].id);
+                    //라이브러리 수정하기
+                    await patchLibrary(libraryList[index].id,
+                        _titleControllerList[index].text);
                     await initLibraryList();
                     setState(() {});
                     Navigator.of(context).pop();
