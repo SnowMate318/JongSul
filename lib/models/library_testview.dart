@@ -7,6 +7,7 @@ import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/library/library_data.dart';
 
 import 'package:get/get.dart';
+import 'package:jongsul/models/question_testview.dart';
 
 import 'directory/mini_directory.dart';
 
@@ -119,6 +120,14 @@ class _TestView2State extends State<LibraryTestView> {
               Text(miniDirectories[index].title),
               Text(miniDirectories[index].concept),
               Text(miniDirectories[index].directoryLastAccess),
+              TextButton(
+                  onPressed: () async {
+                    Get.to(QuestionTestView(directoryId: miniDirectories[index].id, directoryTitle: miniDirectories[index].title));
+                  },
+                  child: Text("문제 풀어보기")),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
         );

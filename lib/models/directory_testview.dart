@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../strings.dart';
+import 'directory/mini_directory.dart';
 
 class DirectoryTestView extends StatefulWidget {
   Library library;
@@ -119,7 +120,7 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
                 ),
                 TextButton(
                     onPressed: () async {
-                      Get.to(QuestionTestView(directory: directoryList[index]));
+                      Get.to(QuestionTestView(directoryId: directoryList[index].id, directoryTitle: directoryList[index].title));
                     },
                     child: Text("문제 풀어보기")),
                 SizedBox(
@@ -532,7 +533,7 @@ class _AddQuestionViewState extends State<AddQuestionView> {
 
               TextButton(
                   onPressed: () async {
-                    await addDirectory(
+                    MiniDirectory miniDirectory = await addDirectory(
                         widget.library.id,
                         _directoryTitleController.text,
                         _conceptController.text,
@@ -540,11 +541,47 @@ class _AddQuestionViewState extends State<AddQuestionView> {
                         int.parse(_multipleChoiceController.text),
                         int.parse(_shortAnswerController.text),
                         int.parse(_oxController.text));
-                    Get.back();
+                    if(miniDirectory.id != 0){
+                      Get.to(GoToQuestionVIew(miniDirectory: miniDirectory));
+                    } else {
+                      //Todo: 오류 처리(디렉토리 생성 못함)
+                      //Todo: 알림창(디렉토리를 생성하지 못했습니다 다시 시도 등)
+                    }
                   },
                   child: Text("문제 추가")),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class GoToQuestionVIew extends StatefulWidget {
+  MiniDirectory miniDirectory;
+  GoToQuestionVIew({
+    required this.miniDirectory,
+    super.key
+  });
+
+  @override
+  State<GoToQuestionVIew> createState() => _GoToQuestionVIewState();
+}
+
+class _GoToQuestionVIewState extends State<GoToQuestionVIew> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            Text('문제 추가 완료'),
+            TextButton(
+                onPressed: () {
+                  Get.to(QuestionTestView(directoryId: widget.miniDirectory.id, directoryTitle: widget.miniDirectory.title,));
+                },
+                child: Text('문제 풀기'))
+          ],
         ),
       ),
     );

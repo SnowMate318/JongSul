@@ -60,10 +60,10 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
           padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GenerateProblemScreen(library: widget.library)),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => GenerateProblemScreen(library: widget.library)),
+              // );
             },
             child: Row(
               children: [

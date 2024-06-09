@@ -11,6 +11,7 @@ import '../../screen/0_preliminary_screen/login_screen.dart';
 import 'package:jongsul/strings.dart';
 
 import '../shared/shared_tag.dart';
+import 'mini_directory.dart';
 
 // 상세 조회 페이지 디렉토리 조회
 Future<Directory> getDirectory(int directoryId) async {
@@ -90,7 +91,7 @@ Future<List<Directory>> getDirectoryList(int libraryId) async {
 }
 
 //디렉토리 추가, 포스트
-Future<void> addDirectory(
+Future<MiniDirectory> addDirectory(
     int libraryId,
     String title,
     String script,
@@ -131,12 +132,15 @@ Future<void> addDirectory(
     if (response.statusCode == 200) {
       //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
       //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
-    } else {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      debugPrint(responseBody['message']);
+      return MiniDirectory.fromMap(responseBody);
+    } else {
+      debugPrint('네트워크 에러, ResponseCode: ${response.statusCode.toString()}');
+      return MiniDirectory.init();
     }
   } catch (e){
     debugPrint(e.toString());
+    return MiniDirectory.init();
   }
 }
 
