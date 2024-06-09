@@ -19,6 +19,15 @@ class Home1Screen extends StatelessWidget {
           child: Center(// 이건 중앙에 위치시킴(미관상 넣었는데 자주는 안쓰임)
               child: Column(
                 children: [
+                  // TextButton(// 텍스트 형식으로 된 버튼
+                  //   child: Text("directory_testView"),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => DirectoryTestView(library: library)),
+                  //     );
+                  //   },
+                  // ),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("testView"),
                     onPressed: (){//버튼을 눌렀을 때
@@ -34,6 +43,7 @@ class Home1Screen extends StatelessWidget {
                       );
                     },
                   ),
+
                   // TextButton(// 텍스트 형식으로 된 버튼
                   //   child: Text("DirectoryTestView"),
                   //   onPressed: () {
@@ -58,56 +68,56 @@ class Home1Screen extends StatelessWidget {
                       Get.toNamed('/library');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("loginScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/login');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("communityScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/community');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("generateProblemScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/generateProblem');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("uploadProblemScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/uploadProblem');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("profileScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/profile');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("solveProblemScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/solveProblem');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("updateProblemScreen"),
                     onPressed: (){//버튼을 눌렀을 때
                       Get.toNamed('/updateProblem');//화면이동
                     },
                   ),
-                  SizedBox(height: 40.0,),
+                  //SizedBox(height: 40.0,),
 
                   TextButton(// 텍스트 형식으로 된 버튼
                     child: Text("HomeScreen"),
