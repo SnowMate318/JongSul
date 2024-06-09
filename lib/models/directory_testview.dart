@@ -119,7 +119,7 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
                 ),
                 TextButton(
                     onPressed: () async {
-                      Get.to(QuestionTestView(directory: directoryList[index]));
+                      Get.to(QuestionTestView(directoryId: directoryList[index].id, directoryTitle: directoryList[index].title));
                     },
                     child: Text("문제 풀어보기")),
                 SizedBox(
