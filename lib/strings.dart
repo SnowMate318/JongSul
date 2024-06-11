@@ -1,1 +1,3 @@
 String BASE_URL = 'http://13.210.178.148:80';
+String YOUR_NATIVE_APP_KEY = '1d2da4418ef66b59faf9a87f627b6caf';
+String YOUR_JAVASCRIPT_APP_KEY = 'fc93c068faaf2b96c04fa983d6f8fb39';
