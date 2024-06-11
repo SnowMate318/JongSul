@@ -231,7 +231,7 @@ Future<ServiceUser> socialLogin(String userId, String provider, String email, St
   try{
     Uri uri = Uri.parse('$BASE_URL/api/kakao/login');
     var data = jsonEncode({
-      'user_id': userId,
+      'provider_id': userId,
       'provider': provider,
       'email': email,
       'user_name': nickname,
