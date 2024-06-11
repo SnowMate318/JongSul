@@ -11,8 +11,17 @@ import 'package:jongsul/screen/4_profile_screen/profile_screen.dart';
 import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_screen.dart';
 import 'package:jongsul/screen/6_upload_ploblem_screen/upload_problem_screen.dart';
-
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'strings.dart';
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // runApp() 호출 전 Flutter SDK 초기화
+  KakaoSdk.init(
+    nativeAppKey: YOUR_NATIVE_APP_KEY,
+    javaScriptAppKey: YOUR_JAVASCRIPT_APP_KEY,
+  );
+  runApp(MyApp());
   runApp(const MyApp());
 }
 

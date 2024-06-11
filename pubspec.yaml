@@ -42,7 +42,6 @@ dependencies:
   ntp: ^2.0.0
   shared_preferences: ^2.2.3
   path_provider: ^2.1.3
-  kakao_flutter_sdk: ^1.9.2 # 전체 추가
   kakao_flutter_sdk_user: ^1.9.2 # 카카오 로그인 API 패키지
   mime: ^1.0.5
   syncfusion_flutter_pdf: ^26.1.35
