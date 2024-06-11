@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:jongsul/functions/http_request.dart';
@@ -10,10 +13,13 @@ import 'package:jongsul/models/question/question.dart';
 import 'package:get/get.dart';
 import 'package:jongsul/models/question_testview.dart';
 import 'package:jongsul/models/shared/shared_tag.dart';
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:http_parser/http_parser.dart'; // Add this import for MediaType
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 import '../strings.dart';
 import 'directory/mini_directory.dart';
@@ -183,41 +189,18 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
     );
   }
   Future<String> _getPdfText() async {
+    final byteData = await rootBundle.load('assets/pdfs/software.pdf');
+    final document = PdfDocument(inputBytes: byteData.buffer.asUint8ClampedList());
+//Disposes the document
+//Extract the text from all the pages.
+    String rettext = PdfTextExtractor(document).extractText();
+    document.dispose();
+    debugPrint(rettext);
+    return rettext;
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('access_token');
+//Dispose the document.
 
-    try {
-      // Load the file from the assets
-      final ByteData byteData = await rootBundle.load('assets/pdfs/software.pdf');
-      final Uint8List fileBytes = byteData.buffer.asUint8List();
-
-      // Create the multipart request
-      var request = http.MultipartRequest('POST', Uri.parse('$BASE_URL/api/file/'));
-      request.headers['Authorization'] = 'Bearer $accessToken';
-      request.files.add(http.MultipartFile.fromBytes('pdf', fileBytes, filename: 'software.pdf'));
-      http.StreamedResponse response = await request.send();
-
-
-      if(response.statusCode == 401) {
-        await tokenRefresh(prefs);
-        return '';
-      }
-      if (response.statusCode == 200) {
-        final responseString = await response.stream.bytesToString();
-        final responseData = jsonDecode(responseString);
-        return responseData['extracted_text'];
-      } else {
-        debugPrint('Error: ${jsonDecode(response.toString())}');
-        return '';
-      }
-    } catch (e) {
-      debugPrint('Error: $e');
-      return '';
-    }
   }
-//
-
 }
 //------------------------ 문제공유 ---------------------------
 class ShareDirectotyView extends StatefulWidget {
