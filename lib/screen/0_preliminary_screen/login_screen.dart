@@ -39,9 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void handleKakaoLogin() async {
-    var newUser = await signUpForKakao();
+    //var newUser = await signUpForKakao();
     setState(() {
-      testUser = newUser;
+      //testUser = newUser;
     });
   }
 

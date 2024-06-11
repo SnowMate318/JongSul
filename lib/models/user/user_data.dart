@@ -247,7 +247,8 @@ Future<ServiceUser> socialLogin(String userId, String provider, String email, St
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       prefs.setString("access_token", responseBody['token']['access']);
       prefs.setString("refresh_token", responseBody['token']['refresh']);
-      return ServiceUser.fromMap(responseBody);
+      debugPrint(responseBody.toString());
+      return ServiceUser.fromMap(responseBody['user']);
     } else {
       // 에러 처리
       debugPrint('인증 실패: ${response.body}');
