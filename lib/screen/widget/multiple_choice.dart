@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jongsul/models/question/choice.dart';
 import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/tools/color.dart';
 
 Widget MultipleChoice(BuildContext context, Question question) {
+  List<Choice> choiceList = question.choices;
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -53,12 +56,9 @@ Widget MultipleChoice(BuildContext context, Question question) {
                   ),
                   child: Row(
                     children: [
-                      Text('${index}'),
-                      Text('. '),
-                      Text(
-                        ('aaaaaaaaaaaaaaaaaaaaaaaaaa'),
-                        //style: TextStyle(fontSize: 32),
-                      ),
+            Text(
+            "${choiceList[index].choiceNum.toString()}. ${choiceList[index]
+                .choiceContent}"),
                     ],
                   ),
                 ),
