@@ -62,18 +62,18 @@ class MyApp extends StatelessWidget {
           name: '/profile',
           page: () => ProfileScreen(),
         ),
-        GetPage(
-          name: '/solveProblem',
-          page: () => SolveProblemScreen(),
-        ),
-        GetPage(
-          name: '/updateProblem',
-          page: () => UpdateProblemScreen(),
-        ),
-        GetPage(
-          name: '/uploadProblem',
-          page: () => UploadProblemScreen(),
-        ),
+        // GetPage(
+        //   name: '/solveProblem',
+        //   page: () => SolveProblemScreen(),
+        // ),
+        // GetPage(
+        //   name: '/updateProblem',
+        //   page: () => UpdateProblemScreen(),
+        // ),
+        // GetPage(
+        //   name: '/uploadProblem',
+        //   page: () => UploadProblemScreen(),
+        // ),
         GetPage(
           name: '/home',
           page: () => HomeScreen(),

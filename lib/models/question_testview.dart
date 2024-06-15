@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jongsul/models/directory/directory.dart';
-import 'package:jongsul/models/directory/directory_data.dart';
 import 'package:jongsul/models/question/choice.dart';
 import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/models/question/question_data.dart';
 import 'package:get/get.dart';
-import 'package:jongsul/models/directory/mini_directory.dart';
 class QuestionTestView extends StatefulWidget {
   int directoryId;
   String directoryTitle;

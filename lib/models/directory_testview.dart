@@ -191,6 +191,8 @@ class _DirectoryTestViewState extends State<DirectoryTestView> {
   Future<String> _getPdfText() async {
     final byteData = await rootBundle.load('assets/pdfs/software.pdf');
     final document = PdfDocument(inputBytes: byteData.buffer.asUint8ClampedList());
+    //Todo: 위에 두 줄 삭제
+    //Todo: 위 document를 자신의 휴대폰에서 선택한 pdf에 대한 도큐먼트로 교체
 //Disposes the document
 //Extract the text from all the pages.
     String rettext = PdfTextExtractor(document).extractText();
