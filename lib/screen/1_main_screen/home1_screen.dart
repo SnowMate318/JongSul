@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jongsul/models/directory_testview.dart';
 import 'package:jongsul/models/library_testview.dart';
 import 'package:jongsul/screen/2_lib_screen/lib_setting.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';

@@ -11,6 +11,7 @@ import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart'
 class GenerateProblemCompleteScreen extends StatefulWidget {
   Library library;
   MiniDirectory miniDirectory;
+
   GenerateProblemCompleteScreen({required this.library,required this.miniDirectory, super.key});
 
   @override
@@ -91,7 +92,7 @@ class _GenerateProblemCompleteScreenState
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SolveProblemScreen(library: widget.library, directoryId: widget.miniDirectory.id, directoryTitle: widget.miniDirectory.title)),
+                        MaterialPageRoute(builder: (context) => SolveProblemScreen(library: widget.library, directoryId: widget.miniDirectory.id, directoryTitle: widget.miniDirectory.title, directoryConcept: widget.miniDirectory.concept,)),
                       );
                     },
                     style: ElevatedButton.styleFrom(

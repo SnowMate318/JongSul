@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/models/directory/directory.dart';
 import 'package:jongsul/models/directory/directory_data.dart';
-import 'package:jongsul/models/directory_testview.dart';
 import 'package:jongsul/models/library/library.dart';
-import 'package:jongsul/models/question_testview.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
+import 'package:jongsul/screen/5_generate_problem_screen/update_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_short_answer_screen.dart';
+import 'package:jongsul/screen/6_upload_ploblem_screen/upload_problem_screen.dart';
 import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class LibraryAllViewScreen extends StatefulWidget {
   Library library;
@@ -63,7 +62,9 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => GenerateProblemScreen(library: widget.library)),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        GenerateProblemScreen(library: widget.library)),
               );
             },
             child: Row(
@@ -123,7 +124,7 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(directory.concept),
+                    //Text(directory.concept),
 
                     // Text('문제 개수: 15'),
                     // Text('오답률: 0%'),
@@ -141,7 +142,13 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                           onPressed: () async {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SolveProblemScreen(library: widget.library, directoryId: directory.id, directoryTitle: directory.title)),
+                              MaterialPageRoute(
+                                  builder: (context) => SolveProblemScreen(
+                                        library: widget.library,
+                                        directoryId: directory.id,
+                                        directoryTitle: directory.title,
+                                        directoryConcept: directory.concept,
+                                      )),
                             );
                           },
                           child: const Text("문제풀기"),
@@ -156,107 +163,6 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
     );
   }
 
-  Widget _buildDirectoryList() {
-    List<TextEditingController> _titleControllerList = [];
-    List<TextEditingController> _conceptControllerList = [];
-    for (int i = 0; i < directoryList.length; i++) {
-      _titleControllerList.add(TextEditingController());
-      _conceptControllerList.add(TextEditingController());
-    }
-    return Column(
-      children: [
-        Text('디렉토리 리스트'),
-        SizedBox(
-          height: 20,
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: directoryList.length,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Text('디렉토리 아이디: ${directoryList[index].id}'),
-                SizedBox(
-                  height: 10,
-                ),
-                Text('디렉토리 이름: ${directoryList[index].title}'),
-                Text('디렉토리 설명: ${directoryList[index].concept}'),
-                SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                    onPressed: () async {
-                      // Get.to(QuestionTestView(directory: directoryList[index]));
-                    },
-                    child: Text("문제 풀어보기")),
-                SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                    onPressed: () {
-                      // Get.to(ShareDirectotyView(
-                      //     directory: directoryList[index],
-                      //     library: widget.library));
-                    },
-                    child: Text('문제 공유하기')),
-                SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _titleControllerList[index],
-                  decoration: InputDecoration(
-                    labelText: '수정할 디렉토리 이름',
-                  ),
-                  validator: (value) {
-                    //유저이름 형식 체크 (1자리 이상) -> 이런 형태가 안나오면 에러
-                    if (value!.isEmpty) {
-                      return '디렉토리 제목 입력해줘';
-                    }
-                    if (directoryList
-                        .any((library) => library.title == value)) {
-                      return '이미 존재하는 디렉토리';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _conceptControllerList[index],
-                  decoration: InputDecoration(
-                    labelText: '수정할 디렉토리 설명',
-                  ),
-                ),
-                TextButton(
-                    onPressed: () async {
-                      await patchDirectory(
-                          directoryList[index].id,
-                          _titleControllerList[index].text,
-                          _conceptControllerList[index].text);
-                      await initDirectories();
-                    },
-                    child: Text("디렉토리 수정")),
-                TextButton(
-                    onPressed: () async {
-                      await deleteDirectory(directoryList[index].id);
-                      await initDirectories();
-                    },
-                    child: Text("디렉토리 삭제")),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                    // onPressed: () async {
-                    //   Get.to(AddQuestionView(library: widget.library));
-                    // },
-
-                    onPressed: () {},
-                    child: Text("문제 추가"))
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
 
   void FlutterDialog(BuildContext context, int index) {
     showDialog(
@@ -285,7 +191,14 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UploadProblemScreen(
+                            library: widget.library,
+                            directory: directoryList[index],
+                          )),
+                    );
                   },
                   child: Text("공유하기"),
                 ),
@@ -420,8 +333,12 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              UpdateProblemShortAnswerScreen()),
+                          builder: (context) => UpdateProblemScreen(
+                                library: widget.library,
+                                directoryId: directoryList[index].id,
+                                directoryTitle: directoryList[index].title,
+                                directoryConcept: directoryList[index].concept,
+                              )),
                     );
                   },
                   child: Row(
@@ -444,8 +361,6 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                   child: Text('취소')),
             ],
           );
-        }
-
-        );
+        });
   }
 }
