@@ -399,6 +399,9 @@ class _AddQuestionViewState extends State<AddQuestionView> {
               ),
               Text('생성 문제 개념'),
               TextFormField(
+                maxLines: 1000, // 최대 높이(줄) 설정
+                minLines: 1, // 최소 높이(줄) 설정
+                maxLength: 10000,
                 decoration: InputDecoration(
                   labelText: '생성 문제 개념',
                 ),

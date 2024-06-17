@@ -4,6 +4,7 @@ import 'package:jongsul/models/question/choice.dart';
 import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/models/question/question_data.dart';
 import 'package:jongsul/screen/1_main_screen/home_screen.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 
@@ -59,11 +60,13 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
       ),
       bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
-        child: questionList.isEmpty
-            ? Center(
-                child: Text('오류'),
-              )
-            : PageView.builder(
+        child:
+        // questionList.isEmpty
+        //     ? Center(
+        //         child: Text('오류'),
+        //       )
+        //     :
+        PageView.builder(
                 controller: _pageController,
                 itemCount: questionList.length,
                 itemBuilder: (context, index) {
@@ -389,7 +392,7 @@ class _SolveProblemFinalScreenState extends State<SolveProblemFinalScreen> {
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => LibraryScreen()),
                     );
                   },
                   child: Text('확인')),

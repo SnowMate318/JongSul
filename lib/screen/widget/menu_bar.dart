@@ -8,23 +8,23 @@ class DownMenuBar extends StatelessWidget {
     return BottomNavigationBar(
         onTap: (int index){
           switch (index){
+            // case 0:
+            //   Navigator.pushNamed(context, '/');
+            //   break;
             case 0:
-              Navigator.pushNamed(context, '/');
-              break;
-            case 1:
               Navigator.pushNamed(context, '/library');
               break;
-            case 2:
+            case 1:
               Navigator.pushNamed(context, '/community');
               break;
-            case 3:
+            case 2:
               Navigator.pushNamed(context, '/profile');
               break;
             default:
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home, color: Colors.black,), label: '홈'),
+          //BottomNavigationBarItem(icon: Icon(Icons.home, color: Colors.black,), label: '홈'),
           BottomNavigationBarItem(icon: Icon(Icons.folder, color: Colors.black,), label: "라이브러리"),
           BottomNavigationBarItem(icon: Icon(Icons.list_alt, color: Colors.black,), label: "커뮤니티"),
           BottomNavigationBarItem(icon: Icon(Icons.person, color: Colors.black,), label: "내 정보"),

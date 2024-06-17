@@ -216,7 +216,8 @@ Future<void> patchQuestionScrap(int questionId, bool isScrapped, String director
   };
   Map<String,dynamic> body = {
     "is_scrapped": isScrapped,
-    "dir_name": directoryName
+    "dir_name": directoryName,
+    "question_id": questionId,
   };
   try{
     response = await http.patch(uri, headers: header, body: jsonEncode(body));
