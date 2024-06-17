@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:jongsul/models/directory/mini_directory.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/screen/1_main_screen/home1_screen.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
 import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 
 class GenerateProblemCompleteScreen extends StatefulWidget {
@@ -67,7 +68,7 @@ class _GenerateProblemCompleteScreenState
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home1Screen()),
+                        MaterialPageRoute(builder: (context) => LibraryScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

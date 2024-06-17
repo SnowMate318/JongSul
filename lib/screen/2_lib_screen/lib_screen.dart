@@ -228,55 +228,55 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   );
                 }),
       ),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        key: _key,
-        type: ExpandableFabType.up,
-        overlayStyle: ExpandableFabOverlayStyle(
-          color: Colors.black.withOpacity(0.5),
-        ),
-        distance: 70.0,
-        //childrenOffset: const Offset(0, 0),
-
-        children: [
-          FloatingActionButton.small(
-            child: const Icon(Icons.edit),
-            onPressed: () {
-              final state = _key.currentState;
-
-              if (state != null) {
-                state.toggle();
-              }
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => GenerateProblemScreen(library: library),
-              //   ),
-              // );
-            },
-          ),
-          FloatingActionButton.small(
-            child: const Icon(Icons.file_open),
-            onPressed: () {
-              final state = _key.currentState;
-              if (state != null) {
-                debugPrint('isOpen:${state.isOpen}');
-                state.toggle();
-              }
-            },
-          ),
-          FloatingActionButton.small(
-            child: const Icon(Icons.photo_camera),
-            onPressed: () {
-              final state = _key.currentState;
-              if (state != null) {
-                debugPrint('isOpen:${state.isOpen}');
-                state.toggle();
-              }
-            },
-          ),
-        ],
-      ),
+      // floatingActionButtonLocation: ExpandableFab.location,
+      // floatingActionButton: ExpandableFab(
+      //   key: _key,
+      //   type: ExpandableFabType.up,
+      //   overlayStyle: ExpandableFabOverlayStyle(
+      //     color: Colors.black.withOpacity(0.5),
+      //   ),
+      //   distance: 70.0,
+      //   //childrenOffset: const Offset(0, 0),
+      //
+      //   children: [
+      //     FloatingActionButton.small(
+      //       child: const Icon(Icons.edit),
+      //       onPressed: () {
+      //         final state = _key.currentState;
+      //
+      //         if (state != null) {
+      //           state.toggle();
+      //         }
+      //         // Navigator.push(
+      //         //   context,
+      //         //   MaterialPageRoute(
+      //         //     builder: (context) => GenerateProblemScreen(library: library),
+      //         //   ),
+      //         // );
+      //       },
+      //     ),
+      //     FloatingActionButton.small(
+      //       child: const Icon(Icons.file_open),
+      //       onPressed: () {
+      //         final state = _key.currentState;
+      //         if (state != null) {
+      //           debugPrint('isOpen:${state.isOpen}');
+      //           state.toggle();
+      //         }
+      //       },
+      //     ),
+      //     FloatingActionButton.small(
+      //       child: const Icon(Icons.photo_camera),
+      //       onPressed: () {
+      //         final state = _key.currentState;
+      //         if (state != null) {
+      //           debugPrint('isOpen:${state.isOpen}');
+      //           state.toggle();
+      //         }
+      //       },
+      //     ),
+      //   ],
+      // ),
     );
   }
 

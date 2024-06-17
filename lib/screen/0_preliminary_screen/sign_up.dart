@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/user/service_user.dart';
 import 'package:jongsul/models/user/user_data.dart';
 import 'package:jongsul/screen/1_main_screen/home_screen.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -71,7 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text('회원가입')), //앱바 설정 앱바 텍스트는 text변수에 저장된 "JongSul"
-      bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 70, right: 70),
@@ -191,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               handleSignUp(idController.text, passwordController.text);
                               handleSetServiceUser(_usernameController.text);
                               if (prefs != null) {
-                                Get.to(HomeScreen());
+                                Get.to(LibraryScreen());
                               }
                             }
                           },

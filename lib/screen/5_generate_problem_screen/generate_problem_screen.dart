@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_user_choice_screen.dart';
@@ -22,10 +23,12 @@ class _GenerateProblemScreenState extends State<GenerateProblemScreen> {
   void initState() {
     // TODO: implement initState
     if(widget.text!=null){
-      _conceptController.text = widget.text!;
+      String sanitizedText = widget.text!.replaceAll('\n', ' ').replaceAll(RegExp(r'\s+'), ' ');
+      _conceptController.text = sanitizedText;
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,10 +79,12 @@ class _GenerateProblemScreenState extends State<GenerateProblemScreen> {
                 ),
                 Center(
                   child: Padding(
+                    padding: EdgeInsets.all(20),
                     child: TextFormField(
-                      maxLines: 300, // 최대 높이(줄) 설정
-                      minLines: 1, // 최소 높이(줄) 설정
-                      maxLength: 1000,
+                      maxLines: null, // 최대 높이(줄) 설정
+                     // minLines: 1, // 최소 높이(줄) 설정
+
+                      maxLength: 10000,
                       controller: _conceptController,
                       decoration: InputDecoration(
                         hintText: '문제를 생성할 개념을 입력해 주세요.',
@@ -95,7 +100,7 @@ class _GenerateProblemScreenState extends State<GenerateProblemScreen> {
                       },
                       //textInputAction: TextInputAction.search,
                     ),
-                    padding: EdgeInsets.all(20),
+
                   ),
                 ),
 

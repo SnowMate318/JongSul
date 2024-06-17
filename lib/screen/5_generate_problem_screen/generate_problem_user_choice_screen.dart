@@ -62,14 +62,20 @@ class _GenerateProblemUserChoiceScreenState
         widget.library.id,
         widget.title,
         widget.concept,
-        int.parse(_difficultyController.text),
+        7,
         int.parse(_multipleChoiceController.text),
         int.parse(_shortAnswerController.text),
         int.parse(_oxController.text));
+    if(miniDirectory.id != 0){
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => GenerateProblemCompleteScreen(library: widget.library, miniDirectory: miniDirectory)),
     );
+    } else {
+      //Todo: 오류 처리(디렉토리 생성 못함)
+      //Todo: 알림창(디렉토리를 생성하지 못했습니다 다시 시도 등)
+
+    }
   }
 
 
@@ -129,41 +135,41 @@ class _GenerateProblemUserChoiceScreenState
                         letterSpacing: 0.14,
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      '난이도(1~10)',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 35,
-                          child: TextFormField(
-                            maxLength: 2,
-                            controller: _difficultyController,
-                            textAlignVertical: TextAlignVertical.top,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelStyle: TextStyle(color: Color(0xFF8B5000)),
-                              counterText: '', //글자수 제한 표시 없앰
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '생성 문제 난이도 입력해줘';
-                              }
-                              if (int.tryParse(value) == null) {
-                                return '숫자로 입력해줘';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        //Text('   ',style: TextStyle(fontSize: 20),),
-                      ],
-                    ),
+                    // SizedBox(height: 20),
+                    // Text(
+                    //   '난이도(1~10)',
+                    //   style: TextStyle(fontSize: 20),
+                    // ),
+                    // SizedBox(height: 10),
+                    // Row(
+                    //   children: [
+                    //     Container(
+                    //       width: 70,
+                    //       height: 35,
+                    //       child: TextFormField(
+                    //         maxLength: 2,
+                    //         controller: _difficultyController,
+                    //         textAlignVertical: TextAlignVertical.top,
+                    //         textAlign: TextAlign.center,
+                    //         decoration: InputDecoration(
+                    //           border: OutlineInputBorder(),
+                    //           labelStyle: TextStyle(color: Color(0xFF8B5000)),
+                    //           counterText: '', //글자수 제한 표시 없앰
+                    //         ),
+                    //         validator: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return '생성 문제 난이도 입력해줘';
+                    //           }
+                    //           if (int.tryParse(value) == null) {
+                    //             return '숫자로 입력해줘';
+                    //           }
+                    //           return null;
+                    //         },
+                    //       ),
+                    //     ),
+                    //     //Text('   ',style: TextStyle(fontSize: 20),),
+                    //   ],
+                    // ),
                     SizedBox(height: 20),
                     Text(
                       '객관식',

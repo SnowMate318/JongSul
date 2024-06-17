@@ -4,6 +4,7 @@ import 'package:jongsul/models/question/choice.dart';
 import 'package:jongsul/models/question/question.dart';
 import 'package:jongsul/models/question/question_data.dart';
 import 'package:jongsul/screen/1_main_screen/home_screen.dart';
+import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_oxquiz_screen.dart';
 import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
@@ -695,7 +696,7 @@ class _UpdateProblemScreenState extends State<UpdateProblemScreen> {
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => LibraryScreen()),
                     );
                   },
                   child: Text('홈으로')),
