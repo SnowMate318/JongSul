@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/screen/3_community_screen/search_screen.dart';
 import 'package:jongsul/tools/color.dart';
@@ -52,21 +54,21 @@ class _CommunityScreenState extends State<CommunityScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      _buildTag1("전자공학부"),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      _buildTag1("태그"),
-                    ],
-                  ),
-                  _buildFilter(),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         _buildTag1("전자공학부"),
+              //         SizedBox(
+              //           width: 10,
+              //         ),
+              //         _buildTag1("태그"),
+              //       ],
+              //     ),
+              //     _buildFilter(),
+              //   ],
+              // ),
               const SizedBox(
                 height: 20,
               ),
@@ -113,14 +115,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
             children: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: Container(
                   width: MediaQuery.of(context).size.width < 360
                       ? MediaQuery.of(context).size.width
                       : 360,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 10),
-                  height: 520,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  height: 400,
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
                     color: surface, // 왜 적용이 안되지??
@@ -195,31 +197,31 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       //     );
                       //   },
                       //   child:
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: const ShapeDecoration(
-                                color: Color(0xFF8B5000),
-                                shape: OvalBorder(),
-                              ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: const ShapeDecoration(
+                              color: Color(0xFF8B5000),
+                              shape: OvalBorder(),
                             ),
-                            const SizedBox(width: 16),
-                            Text(
-                              shareds[index].userName,
-                              style: const TextStyle(
-                                color: Color(0xFF201B16),
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 0.09,
-                                letterSpacing: 0.15,
-                              ),
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            shareds[index].userName,
+                            style: const TextStyle(
+                              color: Color(0xFF201B16),
+                              fontSize: 16,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0.09,
+                              letterSpacing: 0.15,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
                       // ),
                       // const Flexible(
                       //   fit: FlexFit.tight,
@@ -235,9 +237,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           children: [
                             Column(
                               children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       shareds[index].sharedTitle,
@@ -245,7 +250,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                         color: Color(0xFF201B16),
                                         fontSize: 16,
                                         fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w700,
                                         height: 0.09,
                                         letterSpacing: 0.50,
                                       ),
@@ -285,7 +290,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 0.25,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                             Row(
@@ -344,6 +349,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       ),
     );
   }
+
   // String tagString = '';
   // Widget _buildTagList(Shared shared) {
   //   tagString = shared.sharedTags.map((tag) => '#$tag').join(', ')
@@ -351,13 +357,17 @@ class _CommunityScreenState extends State<CommunityScreen> {
   //       children: Text(tagString)
   //   );
   // }
-  Widget _buildTagList(Shared shared){
+  Widget _buildTagList(Shared shared) {
     return Wrap(
       children: shared.sharedTags.map((tag) => _buildTag(tag.name)).toList(),
     );
   }
-  Widget _buildTag(String tagTitle){
-    return Text('#$tagTitle ');
+
+  Widget _buildTag(String tagTitle) {
+    return Text(
+      '#$tagTitle ',
+      style: TextStyle(color: Colors.grey),
+    );
     //   Padding(
     //   padding: const EdgeInsets.all(4.0),
     //   child: InputChip(
