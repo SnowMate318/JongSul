@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jongsul/models/directory/directory.dart';
 import 'package:jongsul/models/directory/directory_data.dart';
+import 'package:jongsul/models/directory_testview.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_screen.dart';
@@ -10,6 +12,8 @@ import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart'
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class LibraryAllViewScreen extends StatefulWidget {
   Library library;
@@ -23,6 +27,7 @@ class LibraryAllViewScreen extends StatefulWidget {
 class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
   final _key = GlobalKey<ExpandableFabState>();
   List<Directory> directoryList = [];
+  PlatformFile? _pickedFile;
 
   @override
   void initState() {
@@ -60,12 +65,7 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
           padding: EdgeInsets.fromLTRB(10, 10, 0, 80),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        GenerateProblemScreen(library: widget.library)),
-              );
+              _problemDialog(context, widget.library);
             },
             child: Row(
               children: [
@@ -163,7 +163,6 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
     );
   }
 
-
   void FlutterDialog(BuildContext context, int index) {
     showDialog(
         context: context,
@@ -195,9 +194,9 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => UploadProblemScreen(
-                            library: widget.library,
-                            directory: directoryList[index],
-                          )),
+                                library: widget.library,
+                                directory: directoryList[index],
+                              )),
                     );
                   },
                   child: Text("공유하기"),
@@ -228,6 +227,102 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
             // onPressed: () {
             //   Navigator.of(context).pop();
             // },
+          );
+        });
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _pickedFile = result.files.first;
+      });
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  Future<String> _getPdfText() async {
+    if (_pickedFile == null) {
+      return '';
+    }
+    // http.MultipartFile.fromBytes(
+    //   'file',
+    //   _pickedFile!.bytes!,
+    //   filename: _pickedFile!.name,
+    // ),
+    final document = PdfDocument(inputBytes: _pickedFile!.bytes);
+    //Todo: 위에 두 줄 삭제
+    //Todo: 위 document를 자신의 휴대폰에서 선택한 pdf에 대한 도큐먼트로 교체
+//Disposes the document
+//Extract the text from all the pages.
+    String rettext = PdfTextExtractor(document).extractText();
+    document.dispose();
+    debugPrint(rettext);
+    return rettext;
+
+//Dispose the document.
+  }
+
+  void _problemDialog(BuildContext context, Library library) {
+    showDialog(
+        context: context,
+        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+        barrierDismissible: true,
+        //barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "어떤 방식으로 문제를 생성할까요?",
+                ),
+              ],
+            ),
+
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GenerateProblemScreen(library: widget.library)),
+                    );
+                  },
+                  child: Text('직접 입력')),
+              ElevatedButton(
+                  onPressed: () async {
+                    await _pickFile();
+                    if (_pickedFile != null) {
+                      String tmpText = await _getPdfText();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GenerateProblemScreen(
+                                library: widget.library, text: tmpText)),
+                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => AddQuestionView(
+                      //           library: widget.library, text: tmpText)),
+                      // );
+                    }
+                  },
+                  child: Text('PDF파일 첨부')),
+            ],
           );
         });
   }
