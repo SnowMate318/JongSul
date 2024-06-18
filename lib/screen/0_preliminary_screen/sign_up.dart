@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/user/service_user.dart';
 import 'package:jongsul/models/user/user_data.dart';
+import 'package:jongsul/screen/0_preliminary_screen/login_screen.dart';
 import 'package:jongsul/screen/1_main_screen/home_screen.dart';
 import 'package:jongsul/screen/2_lib_screen/lib_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
@@ -192,7 +193,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               handleSignUp(idController.text, passwordController.text);
                               handleSetServiceUser(_usernameController.text);
                               if (prefs != null) {
-                                Get.to(LibraryScreen());
+                                Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+                                //Get.to(LoginScreen());
                               }
                             }
                           },

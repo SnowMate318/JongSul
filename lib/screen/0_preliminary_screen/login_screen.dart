@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   //width: 70,
                   height: 35,
                   child: TextFormField(
-                    //obscureText: true,
+                    obscureText: true,
                     maxLength: 16,
                     controller: passwordController,
                     textAlignVertical: TextAlignVertical.top,

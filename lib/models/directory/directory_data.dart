@@ -145,7 +145,7 @@ Future<MiniDirectory> addDirectory(
 }
 
 //디렉토리 공유, 포스트
-Future<void> shareDirectory(String libraryName, Directory directory,
+Future<void> shareDirectory(String libraryName, MiniDirectory directory,
     List<SharedTag> sharedTags, String concept) async {
   String sharedTitle = '$libraryName/${directory.title}';
   List<Map<String, dynamic>> tags = [];
@@ -200,12 +200,12 @@ Future<void> deleteDirectory(int directoryId) async {
       deleteDirectory(directoryId);
     } else if (response.statusCode == 400) {
       // access token이 invalid할 경우
-      Get.offAll(LoginScreen);
     }
     if (response.statusCode == 200) {
       //Todo: 생성 완료했을 때 로직 추가 ex) 전체 라이브러리 조회 페이지 리랜더링
       //Todo: 만약 response.data(새로 만든 라이브러리에 대한 정보)가 필요한 경우 따로 말하기
     } else {
+      debugPrint(directoryId.toString());
       debugPrint(response.statusCode.toString());
     }
   } catch (e) {

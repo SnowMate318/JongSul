@@ -93,7 +93,9 @@ class _EditInformationState extends State<EditInformation> {
                 children: [
                   Text('회원 정보를 삭제하시겠어요?'),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+
+                    },
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 20, horizontal: 10),
