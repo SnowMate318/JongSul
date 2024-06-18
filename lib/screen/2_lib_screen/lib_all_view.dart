@@ -195,7 +195,7 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
                       MaterialPageRoute(
                           builder: (context) => UploadProblemScreen(
                                 library: widget.library,
-                                directory: directoryList[index],
+                                directory:  widget.library.miniDirectories[index],
                               )),
                     );
                   },
@@ -371,6 +371,8 @@ class _LibraryAllViewScreenState extends State<LibraryAllViewScreen> {
     for (int i = 0; i < directoryList.length; i++) {
       _titleControllerList.add(TextEditingController());
       _conceptControllerList.add(TextEditingController());
+      _conceptControllerList[i] =
+          TextEditingController(text: directoryList[i].concept);
     }
     showDialog(
         context: context,

@@ -6,7 +6,8 @@ import 'package:jongsul/screen/2_lib_screen/lib_all_view.dart';
 import 'package:jongsul/tools/color.dart';
 
 class LibrarySettingScreen extends StatefulWidget {
-  const LibrarySettingScreen({super.key});
+  const LibrarySettingScreen({
+    super.key});
 
   @override
   State<LibrarySettingScreen> createState() => _LibrarySettingScreenState();
@@ -39,6 +40,7 @@ class _LibrarySettingScreenState extends State<LibrarySettingScreen> {
             width: 1,
           ),
         ),
+
       ),
       body: SafeArea(
         //메인 화면

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jongsul/models/directory/directory.dart';
 import 'package:jongsul/models/directory/directory_data.dart';
+import 'package:jongsul/models/directory/mini_directory.dart';
 import 'package:jongsul/models/directory_testview.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/library/library_data.dart';
 import 'package:jongsul/screen/2_lib_screen/lib_all_view.dart';
 import 'package:jongsul/screen/2_lib_screen/lib_setting.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/generate_problem_screen.dart';
+import 'package:jongsul/screen/5_generate_problem_screen/update_problem_screen.dart';
 import 'package:jongsul/screen/5_generate_problem_screen/update_problem_short_answer_screen.dart';
+import 'package:jongsul/screen/6_upload_ploblem_screen/upload_problem_screen.dart';
+import 'package:jongsul/screen/7_solve_problem_screen/solve_problem_screen.dart';
 import 'package:jongsul/screen/widget/menu_bar.dart';
 import 'package:jongsul/tools/color.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -23,8 +30,8 @@ class LibraryScreen extends StatefulWidget {
 class _LibraryScreenState extends State<LibraryScreen> {
   final _key = GlobalKey<ExpandableFabState>();
   List<Library> libraryList = [];
-
   List<Directory> directoryList = [];
+  PlatformFile? _pickedFile;
 
   //Library currentLibrary = Library.init();
 
@@ -45,7 +52,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
   //   directoryList = await getDirectoryList(widget.library.id);
   //   setState(() {});
   // }
-
+  Future<void> _onRefresh() {
+  initLibraryList();
+  return Future<void>.value();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +68,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.add),
+          TextButton(
+            child: Text('상세보기'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -73,161 +83,271 @@ class _LibraryScreenState extends State<LibraryScreen> {
       ),
       bottomNavigationBar: DownMenuBar(),
       body: SafeArea(
-        child: libraryList.isEmpty
-            ? Center(
-                child: IntrinsicWidth(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        AddDialog(context);
-                      },
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: libraryList.isEmpty
+              ? Center(
+            child: IntrinsicWidth(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
+                child: ElevatedButton(
+                  onPressed: () {
+                    AddDialog(context);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.add, color: Colors.white, size: 20),
+                      Text(
+                        '라이브러리 추가',
+                        style: TextStyle(
+                          color: Colors.white, // 폰트 색상
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primary, // 배경색상
+                    //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  ),
+                ),
+              ),
+            ),
+          )
+              : ListView.builder(
+              itemCount: libraryList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.all(15),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.add, color: Colors.white, size: 20),
                           Text(
-                            '라이브러리 추가',
-                            style: TextStyle(
-                              color: Colors.white, // 폰트 색상
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
+                            libraryList[index].title,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        LibraryAllViewScreen(
+                                            library: libraryList[index])),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Text("전체보기"),
+                                Icon(Icons.chevron_right, size: 18),
+                              ],
                             ),
                           )
                         ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primary, // 배경색상
-                        //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      ),
                     ),
-                  ),
-                ),
-              )
-            : ListView.builder(
-                itemCount: libraryList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.all(15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              libraryList[index].title,
-                              style: TextStyle(fontSize: 20),
+                    libraryList[index].miniDirectories.isEmpty
+                        ? Center(
+                      child: IntrinsicWidth(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _problemDialog(
+                                  context, libraryList[index]);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.add,
+                                    color: Colors.white, size: 20),
+                                Text(
+                                  '문제 생성',
+                                  style: TextStyle(
+                                    color: Colors.white, // 폰트 색상
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                )
+                              ],
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          LibraryAllViewScreen(
-                                              library: libraryList[index])),
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text("전체보기"),
-                                  Icon(Icons.chevron_right, size: 18),
-                                ],
-                              ),
-                            )
-                          ],
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primary, // 배경색상
+                              //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            ),
+                          ),
                         ),
                       ),
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          height: 200.0,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.45,
-                          reverse: false,
-                        ),
-                        items: libraryList[index].miniDirectories.map((i) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Card(
-                                margin: const EdgeInsets.all(10),
-                                child: Column(
+                    )
+                        : CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200.0,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 0.45,
+                        reverse: false,
+                      ),
+                      items: List.generate(
+                          libraryList[index].miniDirectories.length,
+                              (i) {
+                            final miniDirectory =
+                            libraryList[index].miniDirectories[i];
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Card(
+                                  margin: const EdgeInsets.all(10),
+                                  child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           ListTile(
-                                              title: Text(i.title,
-                                                  style: const TextStyle(
-                                                      fontSize: 20)),
-                                              trailing: IconButton(
-                                                onPressed: () {
-                                                  FlutterDialog(context, index);
-                                                },
-                                                icon: Icon(Icons.more_vert,
-                                                    size: 18),
-                                              )),
+                                            title: Text(miniDirectory.title,
+                                                style: const TextStyle(
+                                                    fontSize: 20)),
+                                            trailing: IconButton(
+                                              onPressed: () {
+                                                FlutterDialog(
+                                                    context,
+                                                    index,
+                                                    miniDirectory,
+                                                    i);
+                                              },
+                                              icon: Icon(Icons.more_vert,
+                                                  size: 18),
+                                            ),
+                                          ),
                                           Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 16.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(i.concept),
-                                                  // Text('문제 개수: 15'),
-                                                  // Text('오답률: 0%'),
-                                                ],
-                                              ))
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              children: [
+                                                // Text(miniDirectory.concept),
+                                                // Text('문제 개수: 15'),
+                                                // Text('오답률: 0%'),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 16, 16),
+                                        padding: EdgeInsets.fromLTRB(
+                                            0, 0, 16, 16),
                                         child: Align(
                                           alignment: Alignment.bottomRight,
                                           child: FilledButton.tonal(
-                                            onPressed: () {
-                                              // Navigator.push(
-                                              //context,
-                                              //MaterialPageRoute(builder: (context) =>  QuestionTestView(directory: i)),
-                                              // );
+                                            onPressed: () async {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SolveProblemScreen(
+                                                        library:
+                                                        libraryList[index],
+                                                        directoryId:
+                                                        miniDirectory.id,
+                                                        directoryTitle:
+                                                        miniDirectory.title,
+                                                        directoryConcept:
+                                                        miniDirectory
+                                                            .concept,
+                                                      ),
+                                                ),
+                                              );
                                             },
-                                            child: const Text("시작하기"),
+                                            child: const Text("문제풀기"),
                                           ),
                                         ),
-                                      )
-                                    ]),
-                              );
-                              // return Container(
-                              //     width: MediaQuery.of(context).size.width,
-                              //     margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              //     decoration: BoxDecoration(
-                              //         color: Colors.amber
-                              //     ),
-                              // );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Divider(
-                        color: Color(0xFFD5C3B5),
-                        height: 1,
-                      ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Divider(
+                      color: Color(0xFFD5C3B5),
+                      height: 1,
+                    ),
+                  ],
+                );
+              }),
+        ),
+        ),
+      floatingActionButton: libraryList.isEmpty
+          ? null
+          : IntrinsicWidth(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 0, 80),
+                child: ElevatedButton(
+                  onPressed: () {
+                    AddDialog(context);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.add, color: Colors.white, size: 20),
+                      Text(
+                        '라이브러리 추가',
+                        style: TextStyle(
+                          color: Colors.white, // 폰트 색상
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )
                     ],
-                  );
-                }),
-      ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primary, // 배경색상
+                    //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  ),
+                ),
+              ),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // IntrinsicWidth(
+      //   child: Padding(
+      //     padding: EdgeInsets.fromLTRB(10, 10, 0, 40),
+      //     child: ElevatedButton(
+      //       onPressed: () {
+      //         AddDialog(context);
+      //       },
+      //       child: Row(
+      //         children: [
+      //           Icon(Icons.add, color: Colors.white, size: 20),
+      //           Text(
+      //             '라이브러리 추가',
+      //             style: TextStyle(
+      //               color: Colors.white, // 폰트 색상
+      //               fontSize: 12,
+      //               fontWeight: FontWeight.normal,
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //       style: ElevatedButton.styleFrom(
+      //         backgroundColor: primary, // 배경색상
+      //         //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+
       // floatingActionButtonLocation: ExpandableFab.location,
       // floatingActionButton: ExpandableFab(
       //   key: _key,
@@ -278,6 +398,102 @@ class _LibraryScreenState extends State<LibraryScreen> {
       //   ],
       // ),
     );
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _pickedFile = result.files.first;
+      });
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  Future<String> _getPdfText() async {
+    if (_pickedFile == null) {
+      return '';
+    }
+    // http.MultipartFile.fromBytes(
+    //   'file',
+    //   _pickedFile!.bytes!,
+    //   filename: _pickedFile!.name,
+    // ),
+    final document = PdfDocument(inputBytes: _pickedFile!.bytes);
+    //Todo: 위에 두 줄 삭제
+    //Todo: 위 document를 자신의 휴대폰에서 선택한 pdf에 대한 도큐먼트로 교체
+//Disposes the document
+//Extract the text from all the pages.
+    String rettext = PdfTextExtractor(document).extractText();
+    document.dispose();
+    debugPrint(rettext);
+    return rettext;
+
+//Dispose the document.
+  }
+
+  void _problemDialog(BuildContext context, Library library) {
+    showDialog(
+        context: context,
+        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+        barrierDismissible: true,
+        //barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "어떤 방식으로 문제를 생성할까요?",
+                ),
+              ],
+            ),
+
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GenerateProblemScreen(library: library)),
+                    );
+                  },
+                  child: Text('직접 입력')),
+              ElevatedButton(
+                  onPressed: () async {
+                    await _pickFile();
+                    if (_pickedFile != null) {
+                      String tmpText = await _getPdfText();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GenerateProblemScreen(
+                                library: library, text: tmpText)),
+                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => AddQuestionView(
+                      //           library: widget.library, text: tmpText)),
+                      // );
+                    }
+                  },
+                  child: Text('PDF파일 첨부')),
+            ],
+          );
+        });
   }
 
   //라이브러리 추가 다이얼로그
@@ -355,7 +571,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   //디렉토리 관련 다이얼로그
-  void FlutterDialog(BuildContext context, int index) {
+  void FlutterDialog(BuildContext context, int libraryIndex,
+      MiniDirectory miniDirectory, int directoryIndex) {
     showDialog(
         context: context,
         //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
@@ -372,7 +589,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    AditDialog(context);
+                    AditDialog(context, miniDirectory, directoryIndex);
                   },
                   child: Text("수정하기"),
                 ),
@@ -382,7 +599,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UploadProblemScreen(
+                                library: libraryList[libraryIndex],
+                                directory: miniDirectory,
+                              )),
+                    );
                   },
                   child: Text("공유하기"),
                 ),
@@ -393,7 +617,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    DelteDialog(context);
+                    DelteDialog(context, miniDirectory);
                   },
                   child: Text("삭제하기"),
                 ),
@@ -416,7 +640,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         });
   }
 
-  void DelteDialog(BuildContext context) {
+  void DelteDialog(BuildContext context, MiniDirectory miniDirectory) {
     showDialog(
         context: context,
         //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
@@ -443,15 +667,28 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('취소')),
               ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () async {
+                    await deleteDirectory(miniDirectory.id);
+                    await initLibraryList();
+                    Navigator.of(context).pop();
+                  },
                   child: Text('확인')),
             ],
           );
         });
   }
 
-  void AditDialog(BuildContext context) {
-    TextEditingController description = TextEditingController();
+  void AditDialog(
+      BuildContext context, MiniDirectory miniDirectory, int index) {
+    List<TextEditingController> _titleControllerList = [];
+    List<TextEditingController> _conceptControllerList = [];
+    for (int i = 0; i < libraryList[index].miniDirectories.length; i++) {
+      _titleControllerList.add(TextEditingController());
+      _conceptControllerList.add(TextEditingController());
+      _conceptControllerList[i] = TextEditingController(
+          text: libraryList[index].miniDirectories[i].concept);
+    }
+
     showDialog(
         context: context,
         //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
@@ -470,7 +707,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 TextField(
                   maxLength: 20,
                   maxLines: 1,
-                  controller: description,
+                  controller: _titleControllerList[index],
                   decoration: InputDecoration(
                     labelStyle: TextStyle(color: Color(0xFF8B5000)),
                     border: UnderlineInputBorder(
@@ -497,8 +734,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              UpdateProblemShortAnswerScreen()),
+                          builder: (context) => UpdateProblemScreen(
+                                library: libraryList[index],
+                                directoryId: miniDirectory.id,
+                                directoryTitle: miniDirectory.title,
+                                directoryConcept: miniDirectory.concept,
+                              )),
                     );
                   },
                   child: Row(
@@ -507,7 +748,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 ),
               ),
               ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () async {
+                    await patchDirectory(
+                        miniDirectory.id,
+                        _titleControllerList[index].text,
+                        _conceptControllerList[index].text);
+                    await initLibraryList();
+                    Navigator.of(context).pop();
+                  },
                   child: Text('이름변경')),
               ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),

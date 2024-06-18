@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jongsul/models/directory/directory.dart';
 import 'package:jongsul/models/directory/directory_data.dart';
+import 'package:jongsul/models/directory/mini_directory.dart';
 import 'package:jongsul/models/library/library.dart';
 import 'package:jongsul/models/shared/shared_tag.dart';
 import 'package:jongsul/screen/3_community_screen/community_screen.dart';
@@ -8,7 +9,7 @@ import 'package:jongsul/tools/style.dart';
 import 'dart:async';
 
 class UploadProblemScreen extends StatefulWidget {
-  Directory directory;
+  MiniDirectory directory;
   Library library;
 
   UploadProblemScreen(
